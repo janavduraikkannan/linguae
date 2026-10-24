@@ -16,13 +16,17 @@ function catAt(id,x,y,s){const c=cats[id]||(cats[id]=new Cat(id,layers.world));c
 function freshCats(){Object.values(cats).forEach(c=>c.remove());cats={}}
 function hideCat(id){const c=cats[id];if(c){c.root.style.display='none';c.idle(false)}}
 function moveCat(c,x,y,s,d=.6,ease='power3.inOut'){c.pos={x,y,s};return gsap.to(c.root,{x:x-120*s,y:y-240*s,scale:s,duration:d,ease})}
-function heroSpot(){const H=S.H;return{x:0,y:Math.min(H/2-175,330),s:S.portrait?1.75:1.85}}
-function tourSpot(){const W=S.W,H=S.H;return S.portrait?{x:0,y:-H/2+H*.36,s:1.3}:{x:-W/2+W*.24,y:Math.min(H/2-185,300),s:1.6}}
+/* Where things go, per version. Desktop stages side by side; phone stacks top to bottom. Both stop at the bottom
+   of the stage area, which ends above the subtitle band. */
+function heroSpot(){const H=S.H;return S.phone?{x:0,y:H/2+6,s:2.05}:{x:0,y:H/2+6,s:1.7}}
+function tourSpot(){const W=S.W,H=S.H;return S.phone?{x:0,y:-H/2+H*.37,s:Math.min(1.3,H*.33/240)}:{x:-W/2+W*.22,y:H/2+6,s:1.55}}
 function lineupSpots(){
   const W=S.W,H=S.H;
-  if(S.portrait){const y1=-H/2+H*.40,y2=-H/2+H*.68,s=1.25;return[[-235,y1,s],[235,y1,s],[-235,y2,s],[235,y2,s]]}
-  const gap=Math.min(250,W/4.4),y=Math.min(H/2-265,200),s=1.08;return[-1.5,-.5,.5,1.5].map(i=>[i*gap,y,s]);
+  if(S.phone){const y2=H/2-96,y1=y2-330,s=.92;return[[-150,y1,s],[150,y1,s],[-150,y2,s],[150,y2,s]]}
+  const gap=Math.min(250,W/4.3),y=H/2-100,s=1;return[-1.5,-.5,.5,1.5].map(i=>[i*gap,y,s]);
 }
+/* phone only: during the language question the cats shrink into one row under the buttons */
+function askRowSpots(){const H=S.H;return[-1.5,-.5,.5,1.5].map(i=>[i*148,H/2+4,.52])}
 function fx(kind,v){A.fx(kind,v)}
 function puff(x,y,n=8,col='#FFF8EA',r=26,spread=110){
   for(let i=0;i<n;i++){const a=Math.PI*2*i/n+rnd(-.3,.3),c=svgEl('circle',{cx:x,cy:y,r:r*rnd(.6,1.1),fill:col,stroke:'#2A2420','stroke-width':4,filter:'url(#boil)'});layers.front.append(c);
@@ -184,7 +188,7 @@ const PANELS={
 const TOUR=[['courses','present','happy'],['topics','point','curious'],['sentence','point','happy'],['feedback','chin','thinking'],['ec','point','cheeky'],['chat','wave','delighted'],['key','point','happy'],['chart','point','calm'],['xp','cheer','excited'],['account','present','proud']];
 
 /* ------------------------------------------------------------------ questions */
-function ask(html){const a=$('#ask');a.innerHTML=html;a.hidden=false;$('#bSkip').hidden=true;gsap.fromTo(a,{y:30,opacity:0},{y:0,opacity:1,duration:.45,ease:'back.out(1.8)'});gsap.from(a.querySelectorAll('button,.note'),{y:14,opacity:0,stagger:.06,duration:.35,delay:.12,ease:'back.out(2)'});return a}
+function ask(html,kind='lang'){const a=$('#ask');a.innerHTML=html;a.className='ask ask-'+kind;a.hidden=false;$('#bSkip').hidden=true;gsap.fromTo(a,{y:30,opacity:0},{y:0,opacity:1,duration:.45,ease:'back.out(1.8)'});gsap.from(a.querySelectorAll('button,.note'),{y:14,opacity:0,stagger:.06,duration:.35,delay:.12,ease:'back.out(2)'});return a}
 function hideAsk(){const a=$('#ask');if(a.hidden)return;$('#bSkip').hidden=false;gsap.to(a,{opacity:0,y:20,duration:.2,onComplete:()=>{a.hidden=true;a.innerHTML=''}})}
 function choose(a,selector){const g=D.gen;return new Promise((ok,no)=>{a.querySelectorAll(selector).forEach(b=>b.addEventListener('click',()=>{if(g!==D.gen)return no(new D.Cancel());if(b.disabled||b.getAttribute('aria-disabled')==='true')return;fx('click');ok(b.dataset.v)}));
   D.choiceCancel=()=>no(new D.Cancel())})}
@@ -257,12 +261,12 @@ async function enterDrop(c,[x,y,s]){c.place(x,y,s);c.root.style.display='';gsap.
   await D.tl(gsap.timeline().to(c.squash,{scaleY:.82,scaleX:1.14,duration:.06}).to(c.squash,{scaleY:1,scaleX:1,duration:.4,ease:'elastic.out(1,.4)'}))}
 let plateG=null;
 function plates(L){if(plateG)plateG.remove();plateG=svgEl('g',{class:'plates'});layers.front.append(plateG);
-  L.forEach(([x,y,s],i)=>{const c=CATS.chars[ORDER[i]],site=SITE_BY[SITE_OF[ORDER[i]]],live=site.live;const g=svgEl('g',{transform:`translate(${x} ${y+30})`,opacity:0});
+  L.forEach(([x,y,s],i)=>{const c=CATS.chars[ORDER[i]],site=SITE_BY[SITE_OF[ORDER[i]]],live=site.live;const g=svgEl('g',{transform:`translate(${x} ${y+(S.phone?18:24)})`,opacity:0});
     g.innerHTML=`<rect x="-118" y="-4" width="236" height="74" rx="14" fill="#FFF8EA" stroke="#2A2420" stroke-width="4" filter="url(#boil)"/><text x="0" y="34" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="700" font-size="34" fill="${c.color}">${site.site}</text><text x="0" y="58" text-anchor="middle" font-family="Figtree, sans-serif" font-weight="700" font-size="19" fill="#6A5D4F">${site.lang}${live?'':' · soon'}</text>`;
     plateG.append(g)})}
 function showPlate(i){const g=plateG&&plateG.children[i];if(!g)return;fx('pop',.4);gsap.fromTo(g,{opacity:0,y:'+=30'},{opacity:1,y:'-=30',duration:.4,ease:'back.out(2)'})}
 let linkG=null;
-function links(L){if(linkG)linkG.remove();linkG=svgEl('g');layers.back.append(linkG);const top=-S.H/2+(S.portrait?S.H*.2:150);
+function links(L){if(linkG)linkG.remove();linkG=svgEl('g');layers.back.append(linkG);const top=-S.H/2+(S.phone?110:120);
   L.forEach(([x,y,s])=>{const p=svgEl('path',{d:`M0,${top} C0,${top+120} ${x},${y-330*s} ${x},${y-260*s}`,fill:'none',stroke:'#A9442A','stroke-width':5,'stroke-dasharray':'14 12','stroke-linecap':'round',opacity:.8});linkG.append(p);
     const len=p.getTotalLength?p.getTotalLength():600;gsap.fromTo(p,{attr:{'stroke-dashoffset':len}},{attr:{'stroke-dashoffset':0},duration:.9,ease:'power2.out',delay:.3})})}
 function clearLineup(){if(plateG){gsap.to(plateG,{opacity:0,duration:.25,onComplete:()=>{if(plateG){plateG.remove();plateG=null}}})}if(linkG){linkG.remove();linkG=null}}
@@ -276,6 +280,7 @@ async function askLanguage(){
   }
   if(linkG){gsap.to(linkG,{opacity:0,duration:.3})}clearPanels();
   F.setFace('curious');F.pose('present');
+  if(S.phone){if(plateG)gsap.to(plateG,{opacity:0,duration:.25});const R2=askRowSpots();ORDER.forEach((id,i)=>{const c=cats[id];if(c)moveCat(c,...R2[i],.55,'back.out(1.4)')})}
   const a=ask(`<p class="q">So, which language are you learning?</p><div class="langs">${SITES.map(s=>`<button type="button" data-v="${s.id}" class="lang">${faceImg(s.cat)}<span><b>${s.lang}</b><small>${s.site}${s.live?'':' · coming soon'}</small></span></button>`).join('')}</div>`);
   // hovering a language makes its cat perk up
   a.querySelectorAll('.lang').forEach(b=>{const c=cats[SITE_BY[b.dataset.v].cat];b.addEventListener('pointerenter',()=>{c.setFace('excited');c.hop(16,.4)});b.addEventListener('pointerleave',()=>c.setFace('happy'))});
@@ -333,7 +338,7 @@ async function askContinue(lang){
   const a=ask(`<p class="q">Continue to ${esc(site.site)}?</p><div class="yn">
     <button type="button" data-v="yes" class="btn big"${site.live?'':' disabled aria-disabled="true"'}>Yes, go to ${esc(site.site)}</button>
     <button type="button" data-v="no" class="btn ghostbtn big">No, go to homepage</button></div>
-    ${site.live?'':`<p class="note">${esc(site.site)} hasn’t been built yet. It’s coming soon!</p>`}`);
+    ${site.live?'':`<p class="note">${esc(site.site)} hasn’t been built yet. It’s coming soon!</p>`}`,'cont');
   D.say(host,'ask.'+lang,{hold:0}).catch(()=>{});
   const v=await choose(a,'.yn button');A.stopVoice();hideAsk();
   if(v==='yes'){host.setFace('delighted');host.pose('cheer');host.hop(40,.5);fx('sparkle');
@@ -376,7 +381,7 @@ function init(){
   P.el=$('#panels');S.init();CAP.init();
   const fl=document.createElement('div');fl.id='flash';fl.className='flash';$('#intro').append(fl);
   $('#bSkip').onclick=skip;$('#bHome').onclick=()=>{fx('click');done('home')};
-  const cc=$('#bCC');cc.setAttribute('aria-pressed',CAP.on);cc.onclick=()=>cc.setAttribute('aria-pressed',CAP.toggle());
+  const cc=$('#bCC');cc.setAttribute('aria-pressed',CAP.on);cc.onclick=()=>{cc.setAttribute('aria-pressed',CAP.toggle());S.layout()};
   const mu=$('#bMute');mu.onclick=()=>{A.init();A.setMute(!A.muted);mu.setAttribute('aria-pressed',A.muted)};
   $('#gateGo').onclick=start;
   addEventListener('keydown',e=>{if($('#intro').hidden)return;if(e.key==='Escape')done('home')});
@@ -392,7 +397,7 @@ async function start(){
   A.startMusic();startBoil();run('open');
 }
 /* open the intro: shows the "Meet Fēlix" gate, which starts sound on the visitor's tap */
-function open(cb){onDone=cb;const I=$('#intro');I.hidden=false;gsap.set(I,{opacity:1});document.body.classList.add('watching');reset();
+function open(cb){onDone=cb;const I=$('#intro');I.hidden=false;gsap.set(I,{opacity:1});document.body.classList.add('watching');S.layout();reset();
   const gate=$('#gate');gate.hidden=false;gsap.set(gate,{opacity:1});setBg('sunburst');
   // Fēlix peeks up at the bottom of the start screen
   const h=heroSpot(),f=catAt('felix',0,S.H/2+h.s*120,h.s);f.setFace('curious');f.idle(true);startBoil();

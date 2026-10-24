@@ -90,21 +90,37 @@ window.DIRECTOR=D;
 
 /* ---------- captions: words light up as they're spoken; foreign words show English on hover ---------- */
 const Captions={on:true,el:null,raf:0};
-Captions.init=function(){Captions.el=$('#captions');try{Captions.on=localStorage.getItem('linguae-cc')!=='0'}catch(e){}};
+Captions.init=function(){Captions.el=$('#captions');try{Captions.on=localStorage.getItem('linguae-cc')!=='0'}catch(e){}Captions.el.classList.toggle('off',!Captions.on)};
+/* Subtitles live in their own band under the picture, so they never cover anything. Long lines are split into
+   short chunks, the way real subtitles are, and only the chunk being spoken is shown. */
+Captions.chunkChars=()=>window.STAGE&&STAGE.phone?44:84;
 Captions.show=function(v,clock,cat){
   const E=Captions.el;if(!E)return;cancelAnimationFrame(Captions.raf);Captions.cur=v;
-  const name=window.CATS.chars[v.who].name;
-  // split the caption html into words (keeping <u>/<i> tags whole)
-  const tmp=document.createElement('div');tmp.innerHTML=v.cap;const words=[];
-  tmp.childNodes.forEach(n=>{if(n.nodeType===3)n.textContent.split(/(\s+)/).forEach(w=>{if(w.trim())words.push(document.createTextNode(w));else if(w)words.push(' ')});else words.push(n)});
-  const line=document.createElement('p');let wi=0;
-  words.forEach(w=>{if(w===' '){line.append(' ');return}const s=document.createElement('span');s.className='w';s.append(w.cloneNode?w.cloneNode(true):w);line.append(s)});
-  // some text nodes split one caption word into several spans (e.g. "Salvē!" + " I'm"); align counts loosely
-  E.innerHTML=`<b class="who" style="--c:${window.CATS.chars[v.who].color}">${name}</b>`;E.append(line);
+  const line=E.querySelector('.capline'),C=window.CATS.chars[v.who];
+  // words of the caption (foreign words stay whole, keeping their English hover)
+  // a word can mix a foreign word and the punctuation after it ("Imperātor,"), so a word is a list of nodes
+  const tmp=document.createElement('div');tmp.innerHTML=v.cap;const words=[];let glue=false;
+  tmp.childNodes.forEach(n=>{
+    if(n.nodeType!==3){if(glue&&words.length)words[words.length-1].push(n);else words.push([n]);glue=true;return}
+    const t=n.textContent,parts=t.split(/\s+/);
+    parts.forEach((w,i)=>{if(!w)return;if(i===0&&glue&&!/^\s/.test(t)&&words.length)words[words.length-1].push(document.createTextNode(w));else words.push([document.createTextNode(w)])});
+    glue=!/\s$/.test(t);});
+  const wtext=w=>w.map(x=>x.textContent).join('');
+  // the timing list counts plain words; map each caption word to a start time
+  const T=v.words,k=T.length/Math.max(1,words.length),t0=i=>T[Math.min(T.length-1,Math.floor(i*k))]||0;
+  // chunk: break before the limit, preferring the end of a phrase
+  const max=Captions.chunkChars(),chunks=[];let cur=[],len=0;
+  words.forEach((w,i)=>{const L=wtext(w).length+1;if(cur.length&&len+L>max){chunks.push(cur);cur=[];len=0}cur.push(i);len+=L;
+    if(/[.!?;:]$/.test(wtext(w))&&len>max*.55){chunks.push(cur);cur=[];len=0}});
+  if(cur.length)chunks.push(cur);
+  let shown=-1;
+  const render=ci=>{shown=ci;line.innerHTML='';const who=document.createElement('b');who.className='who';who.style.setProperty('--c',C.color);who.textContent=C.name;line.append(who);
+    const p=document.createElement('span');p.className='txt';chunks[ci].forEach((wi,j)=>{if(j)p.append(' ');const s=document.createElement('span');s.className='w';s.dataset.i=wi;words[wi].forEach(x=>s.append(x.cloneNode(true)));p.append(s)});line.append(p)};
   E.classList.toggle('off',!Captions.on);E.classList.add('show');
-  const spans=[...line.querySelectorAll('.w')],T=v.words;
-  const tick=()=>{const t=clock();const n=T.filter(x=>x<=t+.05).length;spans.forEach((s,i)=>s.classList.toggle('said',i<Math.round(n*spans.length/Math.max(1,T.length))));
-    if(n<T.length)Captions.raf=requestAnimationFrame(tick);else spans.forEach(s=>s.classList.add('said'))};
+  const tick=()=>{const t=clock()+.05;let ci=0;for(let c=0;c<chunks.length;c++)if(t>=t0(chunks[c][0])-.08)ci=c;
+    if(ci!==shown)render(ci);
+    line.querySelectorAll('.w').forEach(s=>s.classList.toggle('said',t>=t0(+s.dataset.i)));
+    if(t<v.dur)Captions.raf=requestAnimationFrame(tick);else line.querySelectorAll('.w').forEach(s=>s.classList.add('said'))};
   tick();
 };
 Captions.hide=function(now){cancelAnimationFrame(Captions.raf);Captions.cur=null;if(Captions.el)Captions.el.classList.remove('show')};
@@ -118,13 +134,20 @@ function boil(){const t=document.getElementById('boilNoise');if(!t)return;const 
 window.startBoil=boil;window.stopBoil=()=>clearInterval(boilT);
 
 /* ---------- stage layout: world units with (0,0) at the center; a 1000 x 900 safe area always fits ---------- */
-const Stage={svg:null,cam:null,W:1000,H:900,portrait:false};
-Stage.init=function(){Stage.svg=$('#stage');Stage.cam=$('#cam');Stage.layout();addEventListener('resize',Stage.layout)};
+/* Two versions of the intro, same audio: "desktop" (landscape, side-by-side staging) and "phone" (portrait,
+   stacked staging). It's picked from the screen shape; ?v=phone or ?v=desktop forces one. World units have (0,0) at
+   the center of the stage area, and the version's design box (desktop 1000 x 800, phone 600 x 1000) always fits. */
+const Stage={svg:null,cam:null,W:1000,H:800,phone:false,mode:'desktop'};
+Stage.force=(new URLSearchParams(location.search).get('v')||'').toLowerCase();
+Stage.init=function(){Stage.svg=$('#stage');Stage.cam=$('#cam');Stage.wrap=$('#stageWrap');Stage.layout();addEventListener('resize',Stage.layout)};
+Stage.pickMode=function(){if(Stage.force==='phone'||Stage.force==='desktop')return Stage.force;return(innerWidth<720||innerHeight>innerWidth*1.05)?'phone':'desktop'};
 Stage.layout=function(){
-  const w=innerWidth,h=innerHeight,s=Math.min(w/1000,h/900),W=w/s,H=h/s;
-  Stage.W=W;Stage.H=H;Stage.portrait=h>w*1.1;
+  const mode=Stage.pickMode();Stage.mode=mode;Stage.phone=mode==='phone';
+  document.documentElement.classList.toggle('phone',Stage.phone);document.documentElement.classList.toggle('desktop',!Stage.phone);
+  const r=Stage.wrap.getBoundingClientRect(),w=Math.max(1,r.width),h=Math.max(1,r.height);
+  const BW=Stage.phone?600:1000,BH=Stage.phone?1000:800,s=Math.min(w/BW,h/BH),W=w/s,H=h/s;
+  Stage.W=W;Stage.H=H;Stage.px=s;
   Stage.svg.setAttribute('viewBox',`${-W/2} ${-H/2} ${W} ${H}`);
-  document.documentElement.classList.toggle('portrait',Stage.portrait);
   Stage.onLayout&&Stage.onLayout();
 };
 Stage.shake=function(amt=8,d=.35){if(window.REDUCED)return;const S=document.getElementById('shake'),tl=gsap.timeline();for(let i=0;i<6;i++)tl.to(S,{x:(Math.random()-.5)*amt*(1-i/6),y:(Math.random()-.5)*amt*(1-i/6),duration:d/6,ease:'none'});tl.to(S,{x:0,y:0,duration:.08});return tl};

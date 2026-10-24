@@ -1,0 +1,17 @@
+{
+  "_about": "ElevenLabs voices for the intro, and the takes already generated. A line listed under 'takes' is reused, not regenerated. Flow: https://elevenlabs.io/app/flows/zcCV1suBjHLlcu4BQkWK",
+  "flow_id": "zcCV1suBjHLlcu4BQkWK",
+  "model_id": "eleven_v4",
+  "voices": {
+    "felix":      {"voice_id": "kmhW33fhWZsJVeOyIdMz", "name": "Gabriele M. - Reel & Social (young Italian)", "tags": "[strong Italian accent]", "status": "sample"},
+    "felicisimo": {"voice_id": "zSPJ694fdnzmEKl5n9wI", "name": "carlos (teen, Latin American Spanish)", "tags": "[strong Spanish accent]", "status": "sample"},
+    "felicien":   {"voice_id": "GGkMUTZaJ8IyPwaHimUq", "name": "Maxence (young French)", "tags": "[strong French accent]", "status": "sample"},
+    "frohlix":    {"voice_id": "5Axpbpycg8qWQ7LexavI", "name": "Dylan Carter (young German)", "tags": "[strong German accent]", "status": "sample"}
+  },
+  "takes": {
+    "hand.la": {"who": "felix", "generations": ["zsS9QKIK4PMZAXIXJSdf", "0WQmwgojqKml4ZWZ3WZm"], "prompt": "[excited] [strong Italian accent] Latin? /ˈop.ti.meː/! That's my specialty. [happy] Let me show you around /ˈwer.ba/."},
+    "es.4":    {"who": "felicisimo", "generations": ["ekTJU2KcX9EwCEW8zRTM", "lOX4wByr11Y9GfsdznVr"], "prompt": "[happy] [strong Spanish accent] I check your answer and show you exactly what went wrong. [curious] A missing accent still counts, unless it changes the word, like «hablo» and «habló»."},
+    "fr.4":    {"who": "felicien", "generations": ["ETtMtgsPAGshaIHCvXJ4", "zpK9Jf1CYDkgrCAucTGk"], "prompt": "[happy] [strong French accent] I check your answer and show you exactly what went wrong. [curious] A missing accent still counts, unless it changes the word, like «ou» and «où»."},
+    "de.4":    {"who": "frohlix", "generations": ["sk5d7U6AC465mBfsDN1E", "1nivk1cFr2E4wdGXBc5A"], "prompt": "[happy] [strong German accent] I check your answer and show you exactly what went wrong. [curious] A missing umlaut is pointed out, but it still counts, unless it changes the word, like «schon» and «schön»."}
+  }
+}

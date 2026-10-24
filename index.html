@@ -21,6 +21,7 @@ document.documentElement.setAttribute("data-theme",t);})();
 
 <!-- ================= the intro ================= -->
 <div id="intro" class="intro" aria-label="Introduction video" hidden>
+  <div id="stageWrap" class="stagewrap">
   <svg id="stage" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
     <defs id="defs">
       <filter id="boil" x="-6%" y="-6%" width="112%" height="112%"><feTurbulence id="boilNoise" type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
@@ -31,7 +32,8 @@ document.documentElement.setAttribute("data-theme",t);})();
   </svg>
   <div id="panels" class="panels" aria-live="off"></div>
   <div id="ask" class="ask" hidden></div>
-  <div id="captions" class="captions" aria-live="polite"></div>
+  </div>
+  <div id="captions" class="captions" aria-live="polite"><div class="capline"></div></div>
   <div id="gate" class="gate">
     <h1 class="gate-title">Linguae</h1>
     <p class="gate-sub">Fēlix and his cousins want to say hello.</p>
