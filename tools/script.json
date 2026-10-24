@@ -1,0 +1,317 @@
+{
+ "_about": "Every spoken line in the Linguae intro. {la:word|gloss} marks a word spoken in another language (la, es, fr-fr, de); the gloss is shown on hover in the captions. tools/voices.py turns this into audio/*.mp3 and js/voice.js.",
+ "voices": {
+  "felix": {
+   "voice": "am_puck",
+   "speed": 1.0,
+   "pitch": 2.0
+  },
+  "felicisimo": {
+   "voice": "em_alex",
+   "speed": 1.02,
+   "pitch": 2.0
+  },
+  "felicien": {
+   "voice": [
+    [
+     "ff_siwis",
+     0.55
+    ],
+    [
+     "am_echo",
+     0.45
+    ]
+   ],
+   "speed": 1.0,
+   "pitch": 1.0
+  },
+  "frohlix": {
+   "voice": [
+    [
+     "am_michael",
+     0.7
+    ],
+    [
+     "am_fenrir",
+     0.3
+    ]
+   ],
+   "speed": 1.0,
+   "pitch": 2.5
+  }
+ },
+ "lines": {
+  "open.salve": [
+   "felix",
+   "{la:Salvē!|Hello!} I'm..."
+  ],
+  "open.es": [
+   "felicisimo",
+   "{es:Felicísimo!}"
+  ],
+  "open.fr": [
+   "felicien",
+   "{fr-fr:Félicien!}"
+  ],
+  "open.de": [
+   "frohlix",
+   "{de:Fröhlix!}"
+  ],
+  "open.la": [
+   "felix",
+   "{la:Fēlix!}"
+  ],
+  "open.ahem": [
+   "felix",
+   "Ahem. My cousins. They get a little excited."
+  ],
+  "intro.1": [
+   "felix",
+   "Welcome to {la:Linguae|languages}! That's Latin for languages."
+  ],
+  "intro.2": [
+   "felix",
+   "Here, you practice a language the way you'll actually use it: one whole sentence at a time."
+  ],
+  "intro.3": [
+   "felix",
+   "Every language gets its own site, and every site gets its own tutor."
+  ],
+  "intro.4": [
+   "felix",
+   "There's me, for Latin."
+  ],
+  "intro.5": [
+   "felicisimo",
+   "{es:¡Hola!|Hi!} {es:Felicísimo}, for Spanish."
+  ],
+  "intro.6": [
+   "felicien",
+   "{fr-fr:Bonjour!|Hello!} {fr-fr:Félicien}, for French."
+  ],
+  "intro.7": [
+   "frohlix",
+   "{de:Hallo!|Hi!} {de:Fröhlix}, for German."
+  ],
+  "intro.8": [
+   "felix",
+   "And you only need one account. Make it once, and it works on every site."
+  ],
+  "ask.lang": [
+   "felix",
+   "So, which language are you learning?"
+  ],
+  "hand.la": [
+   "felix",
+   "Latin? {la:Optimē!|Excellent!} That's my specialty. Let me show you around Verba."
+  ],
+  "hand.es": [
+   "felix",
+   "Spanish? Then you want my cousin. {es:Felicísimo}!"
+  ],
+  "hand.es.2": [
+   "felicisimo",
+   "{es:¡Gracias, primo!|Thanks, cousin!}"
+  ],
+  "hand.fr": [
+   "felix",
+   "French? {fr-fr:Félicien}, you're up!"
+  ],
+  "hand.fr.2": [
+   "felicien",
+   "{fr-fr:Merci, cousin!|Thanks, cousin!}"
+  ],
+  "hand.de": [
+   "felix",
+   "German? {de:Fröhlix}, over to you!"
+  ],
+  "hand.de.2": [
+   "frohlix",
+   "{de:Danke, Vetter!|Thanks, cousin!}"
+  ],
+  "la.1": [
+   "felix",
+   "Verba is where you practice Latin, from Latin One Honors all the way to AP Latin."
+  ],
+  "la.2": [
+   "felix",
+   "Start by picking your topics. They're sorted by class, and the ones you've already covered in class are shaded. Press Focus on a topic to practice it in every sentence."
+  ],
+  "la.3": [
+   "felix",
+   "Then I build you a brand-new sentence, and you translate the whole thing: English to Latin, or Latin to English."
+  ],
+  "la.4": [
+   "felix",
+   "I check your answer and show you exactly what went wrong. Word order that doesn't change the meaning never counts against you, and a missing macron still counts, unless it changes the word."
+  ],
+  "la.5": [
+   "felix",
+   "After a translation, name why one word is used for extra credit. There's a whole mode for that, too."
+  ],
+  "la.6": [
+   "felix",
+   "Stuck? Ask me anything. Before you answer, I won't give it away. After you answer, ask whatever you like."
+  ],
+  "la.7": [
+   "felix",
+   "To power me, you'll need a free AI key. The site's guide walks you through getting one in a couple of minutes."
+  ],
+  "la.8": [
+   "felix",
+   "Ending charts and vocabulary sit right above every sentence, and you can hide them whenever you want."
+  ],
+  "la.9": [
+   "felix",
+   "Every right answer earns XP. Climb from {la:Discipulus|student} to {la:Imperātor|emperor}, keep your daily streak going, and finish AP Latin to earn the {la:Laurea|laurel crown}."
+  ],
+  "la.10": [
+   "felix",
+   "Make an account to keep your progress on any device and to join the leaderboard. No email needed. Just keep your account key somewhere safe, because a forgotten password can't be recovered."
+  ],
+  "ask.la": [
+   "felix",
+   "Ready? Shall we head to Verba?"
+  ],
+  "es.1": [
+   "felicisimo",
+   "{es:Palabras} is where you practice Spanish, from Spanish One all the way to AP Spanish Language."
+  ],
+  "es.2": [
+   "felicisimo",
+   "Start by picking your topics. They're sorted by class, from {es:ser|to be} and {es:estar|to be} to every use of the subjunctive. Press Focus on a topic to practice it in every sentence."
+  ],
+  "es.3": [
+   "felicisimo",
+   "Then I build you a brand-new sentence, and you translate the whole thing: English to Spanish, or Spanish to English."
+  ],
+  "es.4": [
+   "felicisimo",
+   "I check your answer and show you exactly what went wrong. A missing accent still counts, unless it changes the word, like {es:hablo|I speak} and {es:habló|he spoke}."
+  ],
+  "es.5": [
+   "felicisimo",
+   "After a translation, name why one word is used for extra credit: {es:ser|to be} or {es:estar|to be}, {es:por|for} or {es:para|for}, preterite or imperfect."
+  ],
+  "es.6": [
+   "felicisimo",
+   "Stuck? Ask me anything. Before you answer, I won't give it away. After you answer, ask whatever you like."
+  ],
+  "es.7": [
+   "felicisimo",
+   "To power me, you'll need a free AI key. The site's guide walks you through getting one in a couple of minutes."
+  ],
+  "es.8": [
+   "felicisimo",
+   "Charts and vocabulary sit right above every sentence. And {es:vosotros|you all}? Totally optional."
+  ],
+  "es.9": [
+   "felicisimo",
+   "Every right answer earns XP. Climb from {es:Estudiante|student} to {es:Leyenda|legend}, keep your daily streak going, and finish AP Spanish to earn the {es:Corona|crown}."
+  ],
+  "es.10": [
+   "felicisimo",
+   "Your account is the same one you use everywhere else. Your Spanish progress just gets its own place in it. No email needed, but keep your account key safe."
+  ],
+  "ask.es": [
+   "felicisimo",
+   "{es:¿Listo?|Ready?} Shall we head to {es:Palabras}?"
+  ],
+  "fr.1": [
+   "felicien",
+   "{fr-fr:Mots} is where you practice French, from French One all the way to AP French Language."
+  ],
+  "fr.2": [
+   "felicien",
+   "Start by picking your topics. They're sorted by class, from {fr-fr:être|to be} and {fr-fr:avoir|to have} to the subjunctive. Press Focus on a topic to practice it in every sentence."
+  ],
+  "fr.3": [
+   "felicien",
+   "Then I build you a brand-new sentence, and you translate the whole thing: English to French, or French to English."
+  ],
+  "fr.4": [
+   "felicien",
+   "I check your answer and show you exactly what went wrong. A missing accent still counts, unless it changes the word, like {fr-fr:ou|or} and {fr-fr:où|where}."
+  ],
+  "fr.5": [
+   "felicien",
+   "After a translation, name why one word is used for extra credit: {fr-fr:passé composé} or {fr-fr:imparfait}, indicative or subjunctive."
+  ],
+  "fr.6": [
+   "felicien",
+   "Stuck? Ask me anything. Before you answer, I won't give it away. After you answer, ask whatever you like."
+  ],
+  "fr.7": [
+   "felicien",
+   "To power me, you'll need a free AI key. The site's guide walks you through getting one in a couple of minutes."
+  ],
+  "fr.8": [
+   "felicien",
+   "Charts and vocabulary sit right above every sentence, and you can hide them whenever you want."
+  ],
+  "fr.9": [
+   "felicien",
+   "Every right answer earns XP. Climb from {fr-fr:Élève|student} to {fr-fr:Légende|legend}, keep your daily streak going, and finish AP French to earn the {fr-fr:Couronne|crown}."
+  ],
+  "fr.10": [
+   "felicien",
+   "Your account is the same one you use everywhere else. Your French progress just gets its own place in it. No email needed, but keep your account key safe."
+  ],
+  "ask.fr": [
+   "felicien",
+   "{fr-fr:Alors?|So?} Shall we head to {fr-fr:Mots}?"
+  ],
+  "de.1": [
+   "frohlix",
+   "{de:Wörter} is where you practice German, from German One all the way to AP German Language."
+  ],
+  "de.2": [
+   "frohlix",
+   "Start by picking your topics. They're sorted by class, from the four cases to word order and the subjunctive. Press Focus on a topic to practice it in every sentence."
+  ],
+  "de.3": [
+   "frohlix",
+   "Then I build you a brand-new sentence, and you translate the whole thing: English to German, or German to English."
+  ],
+  "de.4": [
+   "frohlix",
+   "I check your answer and show you exactly what went wrong. A missing umlaut is pointed out, but it still counts, unless it changes the word, like {de:schon|already} and {de:schön|beautiful}."
+  ],
+  "de.5": [
+   "frohlix",
+   "After a translation, name why one word is used for extra credit: which case, and why."
+  ],
+  "de.6": [
+   "frohlix",
+   "Stuck? Ask me anything. Before you answer, I won't give it away. After you answer, ask whatever you like."
+  ],
+  "de.7": [
+   "frohlix",
+   "To power me, you'll need a free AI key. The site's guide walks you through getting one in a couple of minutes."
+  ],
+  "de.8": [
+   "frohlix",
+   "Charts and vocabulary sit right above every sentence, and you can hide them whenever you want."
+  ],
+  "de.9": [
+   "frohlix",
+   "Every right answer earns XP. Climb from {de:Schüler|student} to {de:Legende|legend}, keep your daily streak going, and finish AP German to earn the {de:Kranz|wreath}."
+  ],
+  "de.10": [
+   "frohlix",
+   "Your account is the same one you use everywhere else. Your German progress just gets its own place in it. No email needed, but keep your account key safe."
+  ],
+  "ask.de": [
+   "frohlix",
+   "{de:Also?|So?} Shall we head to {de:Wörter}?"
+  ],
+  "bye.yes": [
+   "felix",
+   "{la:Valē!|Goodbye!} Have fun!"
+  ],
+  "bye.home": [
+   "felix",
+   "No problem. Here's everything in one place."
+  ]
+ }
+}
