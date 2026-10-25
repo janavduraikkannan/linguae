@@ -1,17 +1,377 @@
 {
-  "_about": "ElevenLabs voices for the intro, and the takes already generated. A line listed under 'takes' is reused, not regenerated. Flow: https://elevenlabs.io/app/flows/zcCV1suBjHLlcu4BQkWK",
-  "flow_id": "zcCV1suBjHLlcu4BQkWK",
-  "model_id": "eleven_v4",
-  "voices": {
-    "felix":      {"voice_id": "kmhW33fhWZsJVeOyIdMz", "name": "Gabriele M. - Reel & Social (young Italian)", "tags": "[strong Italian accent]", "status": "sample"},
-    "felicisimo": {"voice_id": "zSPJ694fdnzmEKl5n9wI", "name": "carlos (teen, Latin American Spanish)", "tags": "[strong Spanish accent]", "status": "sample"},
-    "felicien":   {"voice_id": "GGkMUTZaJ8IyPwaHimUq", "name": "Maxence (young French)", "tags": "[strong French accent]", "status": "sample"},
-    "frohlix":    {"voice_id": "5Axpbpycg8qWQ7LexavI", "name": "Dylan Carter (young German)", "tags": "[strong German accent]", "status": "sample"}
+ "_about": "ElevenLabs voices for the intro and the take used for every line (one take each). tools/import_voices.py turns the downloaded takes into audio/ and js/voice.js. Flow: https://elevenlabs.io/app/flows/zcCV1suBjHLlcu4BQkWK",
+ "flow_id": "zcCV1suBjHLlcu4BQkWK",
+ "model_id": "eleven_v4",
+ "voices": {
+  "felix": {
+   "voice_id": "kmhW33fhWZsJVeOyIdMz",
+   "name": "Gabriele M. - Reel & Social (young Italian)",
+   "tags": "[strong Italian accent]",
+   "status": "approved"
   },
-  "takes": {
-    "hand.la": {"who": "felix", "generations": ["zsS9QKIK4PMZAXIXJSdf", "0WQmwgojqKml4ZWZ3WZm"], "prompt": "[excited] [strong Italian accent] Latin? /ˈop.ti.meː/! That's my specialty. [happy] Let me show you around /ˈwer.ba/."},
-    "es.4":    {"who": "felicisimo", "generations": ["ekTJU2KcX9EwCEW8zRTM", "lOX4wByr11Y9GfsdznVr"], "prompt": "[happy] [strong Spanish accent] I check your answer and show you exactly what went wrong. [curious] A missing accent still counts, unless it changes the word, like «hablo» and «habló»."},
-    "fr.4":    {"who": "felicien", "generations": ["ETtMtgsPAGshaIHCvXJ4", "zpK9Jf1CYDkgrCAucTGk"], "prompt": "[happy] [strong French accent] I check your answer and show you exactly what went wrong. [curious] A missing accent still counts, unless it changes the word, like «ou» and «où»."},
-    "de.4":    {"who": "frohlix", "generations": ["sk5d7U6AC465mBfsDN1E", "1nivk1cFr2E4wdGXBc5A"], "prompt": "[happy] [strong German accent] I check your answer and show you exactly what went wrong. [curious] A missing umlaut is pointed out, but it still counts, unless it changes the word, like «schon» and «schön»."}
+  "felicisimo": {
+   "voice_id": "zSPJ694fdnzmEKl5n9wI",
+   "name": "carlos (teen, Latin American Spanish)",
+   "tags": "[strong Spanish accent]",
+   "status": "approved"
+  },
+  "felicien": {
+   "voice_id": "GGkMUTZaJ8IyPwaHimUq",
+   "name": "Maxence (young French)",
+   "tags": "[strong French accent]",
+   "status": "approved"
+  },
+  "frohlix": {
+   "voice_id": "5Axpbpycg8qWQ7LexavI",
+   "name": "Dylan Carter (young German)",
+   "tags": "[strong German accent]",
+   "status": "approved"
   }
+ },
+ "takes": {
+  "open.salve": {
+   "who": "felix",
+   "prompt": "[excited] [strong Italian accent] /ˈsal.weː/! I'm...",
+   "session": "zM3neRF9ax3canIRaUh7"
+  },
+  "open.es": {
+   "who": "felicisimo",
+   "prompt": "[excited] [strong Spanish accent] Felicísimo!",
+   "session": "duUruJ0q3nrQ5hgCia94"
+  },
+  "open.fr": {
+   "who": "felicien",
+   "prompt": "[excited] [strong French accent] Félicien!",
+   "session": "c63I6nMd6bhVNroWhW9q"
+  },
+  "open.de": {
+   "who": "frohlix",
+   "prompt": "[excited] [strong German accent] Fröhlix!",
+   "session": "xC53EWJgIZiWB7xwKzL9"
+  },
+  "open.la": {
+   "who": "felix",
+   "prompt": "[proudly] [strong Italian accent] /ˈfeː.lɪks/!",
+   "session": "Dnvr4SCBFtCsTnkyq5Qr"
+  },
+  "open.ahem": {
+   "who": "felix",
+   "prompt": "[sheepishly] [strong Italian accent] Ahem. My cousins. They get a little excited.",
+   "session": "49EY5IrNahhqtAoT1jVY"
+  },
+  "intro.1": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] Welcome to /ˈlɪŋ.ɡwae̯/! That's Latin for languages.",
+   "session": "2dixPB7MXqlv9jCa3WTj"
+  },
+  "intro.2": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] Here, you practice a language the way you'll actually use it: one whole sentence at a time.",
+   "session": "SmeUDH56jHfXoShWMFdU"
+  },
+  "intro.3": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] Every language gets its own site, and every site gets its own tutor.",
+   "session": "Qw9b5qpxyfOnXsCf3FNd"
+  },
+  "intro.4": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] There's me, for Latin.",
+   "session": "MRlMd1tRZOdlLGXx5fkw"
+  },
+  "intro.5": {
+   "who": "felicisimo",
+   "prompt": "[happy] [strong Spanish accent] ¡Hola! Felicísimo, for Spanish.",
+   "session": "VCtZGSxrmoFLALfdIczv"
+  },
+  "intro.6": {
+   "who": "felicien",
+   "prompt": "[curious] [strong French accent] Bonjour! Félicien, for French.",
+   "session": "tSIZkOvSKftQ04sHpQUb"
+  },
+  "intro.7": {
+   "who": "frohlix",
+   "prompt": "[happy] [strong German accent] Hallo! Fröhlix, for German.",
+   "session": "oZ0lMM314ZCQhHuelKTM"
+  },
+  "intro.8": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] And you only need one account. Make it once, and it works on every site.",
+   "session": "3PElXUgRgC1waMVe4zkf"
+  },
+  "ask.lang": {
+   "who": "felix",
+   "prompt": "[curious] [strong Italian accent] So, which language are you learning?",
+   "session": "70UugCf4CH3sAWbYicXQ"
+  },
+  "hand.la": {
+   "who": "felix",
+   "prompt": "[excited] [strong Italian accent] Latin? /ˈop.ti.meː/! That's my specialty. [happy] Let me show you around /ˈwer.ba/.",
+   "generation": "zsS9QKIK4PMZAXIXJSdf",
+   "note": "approved sample take"
+  },
+  "hand.es": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] Spanish? Then you want my cousin. Felicísimo!",
+   "session": "2IZ2oMmxkGd3ulxh4AoU"
+  },
+  "hand.es.2": {
+   "who": "felicisimo",
+   "prompt": "[excited] [strong Spanish accent] ¡Gracias, primo!",
+   "session": "h5hsENLdJ5GoW0hYSoZB"
+  },
+  "hand.fr": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] French? Félicien, you're up!",
+   "session": "BBvjuxVTnoFv5e0LpQDY"
+  },
+  "hand.fr.2": {
+   "who": "felicien",
+   "prompt": "[excited] [strong French accent] Merci, cousin!",
+   "session": "1N30SvLutZ5vVLVcfdow"
+  },
+  "hand.de": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] German? Fröhlix, over to you!",
+   "session": "wjT2UewfcyIimilD0FXJ"
+  },
+  "hand.de.2": {
+   "who": "frohlix",
+   "prompt": "[excited] [strong German accent] Danke, Vetter!",
+   "session": "LDhxn9gUxyBSh23WgDay"
+  },
+  "la.1": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] /ˈwer.ba/ is where you practice Latin, from Latin One Honors all the way to AP Latin.",
+   "session": "5wmB5Btz56ZpsvQRrxXU"
+  },
+  "la.2": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] Start by picking your topics. They're sorted by class, and the ones you've already covered in class are shaded. Press Focus on a topic to practice it in every sentence.",
+   "session": "VTR3eosd8rKoLSfGny9k"
+  },
+  "la.3": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] Then I build you a brand-new sentence, and you translate the whole thing: English to Latin, or Latin to English.",
+   "session": "mssNluDtHgSaQOSfgmCW"
+  },
+  "la.4": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] I check your answer and show you exactly what went wrong. Word order that doesn't change the meaning never counts against you, and a missing macron still counts, unless it changes the word.",
+   "session": "19eNrQi5eCIUGr1V3iyf"
+  },
+  "la.5": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] After a translation, name why one word is used for extra credit. There's a whole mode for that, too.",
+   "session": "qaPEWAENAHxHqzvkhQzn"
+  },
+  "la.6": {
+   "who": "felix",
+   "prompt": "[curious] [strong Italian accent] Stuck? Ask me anything. Before you answer, I won't give it away. After you answer, ask whatever you like.",
+   "session": "LQBnZqomPtQY5rTvNPQM"
+  },
+  "la.7": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] To power me, you'll need a free AI key. The site's guide walks you through getting one in a couple of minutes.",
+   "session": "JRUJbxtCVvZUo0fQojCO"
+  },
+  "la.8": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] Ending charts and vocabulary sit right above every sentence, and you can hide them whenever you want.",
+   "session": "CCJ9ZzrK0hqcPLWLcxnM"
+  },
+  "la.9": {
+   "who": "felix",
+   "prompt": "[excited] [strong Italian accent] Every right answer earns XP. Climb from /dɪsˈkɪ.pʊ.lʊs/ to /ɪm.pɛˈraː.tɔr/, keep your daily streak going, and finish AP Latin to earn the /ˈlau̯.rɛ.a/.",
+   "session": "zUzp9Qb3l6jhVbfPuEmA"
+  },
+  "la.10": {
+   "who": "felix",
+   "prompt": "[happy] [strong Italian accent] Make an account to keep your progress on any device and to join the leaderboard. No email needed. Just keep your account key somewhere safe, because a forgotten password can't be recovered.",
+   "session": "7xP8uynQUSB9dgPmUu1C"
+  },
+  "ask.la": {
+   "who": "felix",
+   "prompt": "[curious] [strong Italian accent] Ready? Shall we head to /ˈwer.ba/?",
+   "session": "APRpOgU9JkkplDKc0gBd"
+  },
+  "es.1": {
+   "who": "felicisimo",
+   "prompt": "[happy] [strong Spanish accent] Palabras is where you practice Spanish, from Spanish One all the way to AP Spanish Language.",
+   "session": "ZHbQRVWLPeoW6nySEoGy"
+  },
+  "es.2": {
+   "who": "felicisimo",
+   "prompt": "[happy] [strong Spanish accent] Start by picking your topics. They're sorted by class, from ser and estar to every use of the subjunctive. Press Focus on a topic to practice it in every sentence.",
+   "session": "pMwZLQwpm20GkOVDwCLP"
+  },
+  "es.3": {
+   "who": "felicisimo",
+   "prompt": "[happy] [strong Spanish accent] Then I build you a brand-new sentence, and you translate the whole thing: English to Spanish, or Spanish to English.",
+   "session": "vqa0xM8n6yqh1jxn4GGD"
+  },
+  "es.4": {
+   "who": "felicisimo",
+   "prompt": "[happy] [strong Spanish accent] I check your answer and show you exactly what went wrong. [curious] A missing accent still counts, unless it changes the word, like «hablo» and «habló».",
+   "generation": "ekTJU2KcX9EwCEW8zRTM",
+   "note": "approved sample take"
+  },
+  "es.5": {
+   "who": "felicisimo",
+   "prompt": "[happy] [strong Spanish accent] After a translation, name why one word is used for extra credit: ser or estar, por or para, preterite or imperfect.",
+   "session": "nmtgeOVUK7r5wCVpMj53"
+  },
+  "es.6": {
+   "who": "felicisimo",
+   "prompt": "[curious] [strong Spanish accent] Stuck? Ask me anything. Before you answer, I won't give it away. After you answer, ask whatever you like.",
+   "session": "DlUXgdVzhMoT6rSylFGT"
+  },
+  "es.7": {
+   "who": "felicisimo",
+   "prompt": "[happy] [strong Spanish accent] To power me, you'll need a free AI key. The site's guide walks you through getting one in a couple of minutes.",
+   "session": "81tKzcOOvYPoTh3nYq4N"
+  },
+  "es.8": {
+   "who": "felicisimo",
+   "prompt": "[happy] [strong Spanish accent] Charts and vocabulary sit right above every sentence. And vosotros? Totally optional.",
+   "session": "ZgF9Jgu3m210jCPeQfRX"
+  },
+  "es.9": {
+   "who": "felicisimo",
+   "prompt": "[excited] [strong Spanish accent] Every right answer earns XP. Climb from Estudiante to Leyenda, keep your daily streak going, and finish AP Spanish to earn the Corona.",
+   "session": "1oPJFhQkr2mZrXMVPqk8"
+  },
+  "es.10": {
+   "who": "felicisimo",
+   "prompt": "[happy] [strong Spanish accent] Your account is the same one you use everywhere else. Your Spanish progress just gets its own place in it. No email needed, but keep your account key safe.",
+   "session": "iSdrYMkAGr0wwgkb07VN"
+  },
+  "ask.es": {
+   "who": "felicisimo",
+   "prompt": "[curious] [strong Spanish accent] ¿Listo? Shall we head to Palabras?",
+   "session": "WrcQZLFjp1guOoJq7XR8"
+  },
+  "fr.1": {
+   "who": "felicien",
+   "prompt": "[happy] [strong French accent] Mots is where you practice French, from French One all the way to AP French Language.",
+   "session": "LUG7F6k9Tyc5N4MY8LBh"
+  },
+  "fr.2": {
+   "who": "felicien",
+   "prompt": "[happy] [strong French accent] Start by picking your topics. They're sorted by class, from être and avoir to the subjunctive. Press Focus on a topic to practice it in every sentence.",
+   "session": "pD2as0s8malm2E74D0uI"
+  },
+  "fr.3": {
+   "who": "felicien",
+   "prompt": "[happy] [strong French accent] Then I build you a brand-new sentence, and you translate the whole thing: English to French, or French to English.",
+   "session": "feWzRMroNyf0uYCpLi5h"
+  },
+  "fr.4": {
+   "who": "felicien",
+   "prompt": "[happy] [strong French accent] I check your answer and show you exactly what went wrong. [curious] A missing accent still counts, unless it changes the word, like «ou» and «où».",
+   "generation": "ETtMtgsPAGshaIHCvXJ4",
+   "note": "approved sample take"
+  },
+  "fr.5": {
+   "who": "felicien",
+   "prompt": "[happy] [strong French accent] After a translation, name why one word is used for extra credit: passé composé or imparfait, indicative or subjunctive.",
+   "session": "MnMkDm03cfKR0B2z4DfJ"
+  },
+  "fr.6": {
+   "who": "felicien",
+   "prompt": "[curious] [strong French accent] Stuck? Ask me anything. Before you answer, I won't give it away. After you answer, ask whatever you like.",
+   "session": "IOkzzp5NTTcVmqwAc2yv"
+  },
+  "fr.7": {
+   "who": "felicien",
+   "prompt": "[happy] [strong French accent] To power me, you'll need a free AI key. The site's guide walks you through getting one in a couple of minutes.",
+   "session": "84ObGLRnU3gNJAyhcaEu"
+  },
+  "fr.8": {
+   "who": "felicien",
+   "prompt": "[happy] [strong French accent] Charts and vocabulary sit right above every sentence, and you can hide them whenever you want.",
+   "session": "b7B6jcteN0LbglilJvzW"
+  },
+  "fr.9": {
+   "who": "felicien",
+   "prompt": "[excited] [strong French accent] Every right answer earns XP. Climb from Élève to Légende, keep your daily streak going, and finish AP French to earn the Couronne.",
+   "session": "uylbKZJypfIyTRCaeCLl"
+  },
+  "fr.10": {
+   "who": "felicien",
+   "prompt": "[happy] [strong French accent] Your account is the same one you use everywhere else. Your French progress just gets its own place in it. No email needed, but keep your account key safe.",
+   "session": "c0w3mNMyxevyJokIxsMB"
+  },
+  "ask.fr": {
+   "who": "felicien",
+   "prompt": "[curious] [strong French accent] Alors? Shall we head to Mots?",
+   "session": "c8D2IKalD3bXPW4jYpJQ"
+  },
+  "de.1": {
+   "who": "frohlix",
+   "prompt": "[happy] [strong German accent] Wörter is where you practice German, from German One all the way to AP German Language.",
+   "session": "nR5eR9QjfSGFq5sQg3Gf"
+  },
+  "de.2": {
+   "who": "frohlix",
+   "prompt": "[happy] [strong German accent] Start by picking your topics. They're sorted by class, from the four cases to word order and the subjunctive. Press Focus on a topic to practice it in every sentence.",
+   "session": "xVRXVUar73nHN9xRbsPM"
+  },
+  "de.3": {
+   "who": "frohlix",
+   "prompt": "[happy] [strong German accent] Then I build you a brand-new sentence, and you translate the whole thing: English to German, or German to English.",
+   "session": "2TdkPdmlP90vWDwTp99M"
+  },
+  "de.4": {
+   "who": "frohlix",
+   "prompt": "[happy] [strong German accent] I check your answer and show you exactly what went wrong. [curious] A missing umlaut is pointed out, but it still counts, unless it changes the word, like «schon» and «schön».",
+   "generation": "sk5d7U6AC465mBfsDN1E",
+   "note": "approved sample take"
+  },
+  "de.5": {
+   "who": "frohlix",
+   "prompt": "[happy] [strong German accent] After a translation, name why one word is used for extra credit: which case, and why.",
+   "session": "IorX3rvGLcjHNNQ9RtSE"
+  },
+  "de.6": {
+   "who": "frohlix",
+   "prompt": "[curious] [strong German accent] Stuck? Ask me anything. Before you answer, I won't give it away. After you answer, ask whatever you like.",
+   "session": "UcDCjwTcumq8p9CrpGdR"
+  },
+  "de.7": {
+   "who": "frohlix",
+   "prompt": "[happy] [strong German accent] To power me, you'll need a free AI key. The site's guide walks you through getting one in a couple of minutes.",
+   "session": "6I2EjJBzoVbKMRH6binC"
+  },
+  "de.8": {
+   "who": "frohlix",
+   "prompt": "[happy] [strong German accent] Charts and vocabulary sit right above every sentence, and you can hide them whenever you want.",
+   "session": "Nc2lFqXsBujhX1bTLKkl"
+  },
+  "de.9": {
+   "who": "frohlix",
+   "prompt": "[excited] [strong German accent] Every right answer earns XP. Climb from Schüler to Legende, keep your daily streak going, and finish AP German to earn the Kranz.",
+   "session": "8OMGXcZE7AL4y1GqOv88"
+  },
+  "de.10": {
+   "who": "frohlix",
+   "prompt": "[happy] [strong German accent] Your account is the same one you use everywhere else. Your German progress just gets its own place in it. No email needed, but keep your account key safe.",
+   "session": "ydfK5vAhQJptPf9c9MKq"
+  },
+  "ask.de": {
+   "who": "frohlix",
+   "prompt": "[curious] [strong German accent] Also? Shall we head to Wörter?",
+   "session": "L30Vlh0gnsI0hGUSaSBO"
+  },
+  "bye.yes": {
+   "who": "felix",
+   "prompt": "[excited] [strong Italian accent] /ˈwa.leː/! Have fun!",
+   "session": "VaxKQkzzicgNCeBOQ39e"
+  },
+  "bye.home": {
+   "who": "felix",
+   "prompt": "[warmly] [strong Italian accent] No problem. Here's everything in one place.",
+   "session": "qZlitQFthjpuqcQbLH4I"
+  }
+ }
 }

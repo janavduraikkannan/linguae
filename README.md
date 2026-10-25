@@ -32,7 +32,7 @@ Nothing in it is a video file. Everything is drawn and moved by code:
   - Breathing, random blinks and ear twitches.
   - A hand-drawn "line boil" made by re-seeding the paper-roughness filter 8 times a second.
 - **Motion** is done with [GSAP](https://gsap.com) (free "standard" license), vendored in `js/vendor/`.
-- **Voices** come from [Kokoro](https://github.com/hexgrad/kokoro) TTS (Apache-2.0), generated ahead of time from `tools/script.json` by `tools/voices.py`. Each cousin pronounces his own language's words in that language.
+- **Voices** were made with [ElevenLabs](https://elevenlabs.io) (model `eleven_v4`), one take per line of `tools/script.json`. Each cousin has his own voice and accent and says his own language's words in that language. `tools/elevenlabs.json` records the voice and prompt behind every line.
 - **Mouth movements** come from [Rhubarb Lip Sync](https://github.com/DanielSWolf/rhubarb-lip-sync) (MIT), which turns each line into a list of mouth shapes and their timings.
 - **Music** is synthesized by `tools/music.py`, and sound effects are synthesized live with the Web Audio API.
 - **Editing** follows film habits:
@@ -58,18 +58,20 @@ Nothing in it is a video file. Everything is drawn and moved by code:
 | `audio/` | Voice lines and the music loop |
 | `tools/rig.py` | Draws the cats and their parts |
 | `tools/script.json` | Every spoken line |
-| `tools/voices.py` | Text to speech plus lip sync, for every line |
+| `tools/elevenlabs.json` | The ElevenLabs voices, and the prompt and take for every line |
+| `tools/import_voices.py` | Turns the ElevenLabs takes into `audio/` and `js/voice.js` (trim, loudness, lip sync, captions) |
+| `tools/voices.py` | The older offline Kokoro voice pipeline, kept as a fallback |
 | `tools/music.py` | The music |
 
 ### Rebuilding
 
 ```
 python3 tools/rig.py                     # cats -> js/cats.js and art/
-python3 tools/voices.py /path/to/models  # needs kokoro-onnx, ffmpeg, Rhubarb 1.13, kokoro-v1.0.onnx + voices-v1.0.bin
+python3 tools/import_voices.py /path/to/mp3s /path/to/rhubarb  # one ElevenLabs take per line, named <line id>.mp3
 python3 tools/music.py                   # -> audio/music.mp3
 ```
 
-To change what a cat says, edit `tools/script.json` and rerun `voices.py`. You can pass one line's id as the second argument to redo just that line.
+To change what a cat says, edit `tools/script.json`, generate a new take for that line with the same voice and prompt style (see `tools/elevenlabs.json`), and rerun `import_voices.py` with the line's id as the third argument to redo just that line.
 
 ## Credits
 
