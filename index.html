@@ -6,7 +6,7 @@
 <title>Linguae · Language practice with Fēlix and his cousins</title>
 <meta name="description" content="Free sentence-by-sentence practice for Latin, Spanish, French and German, with one account for every site.">
 <script>
-/* Same theme setting as Verba and Palabras (they share this origin). */
+/* Same theme setting as Verba, Palabras, Mots and Wörter (they share this origin). */
 (function(){var t="light";try{if(localStorage.getItem("verba-theme")==="dark")t="dark";}catch(e){}
 document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -20,11 +20,16 @@ document.documentElement.setAttribute("data-theme",t);})();
 <!-- ================= the intro ================= -->
 <div id="intro" class="intro" aria-label="Introduction video" hidden>
   <div id="stageWrap" class="stagewrap">
-    <div id="vbox" class="vbox">
-      <video id="vA" playsinline webkit-playsinline preload="auto" disablepictureinpicture></video>
-      <video id="vB" playsinline webkit-playsinline preload="auto" disablepictureinpicture></video>
-      <div id="ovl" class="ovl"><div id="ask" class="ask" hidden></div></div>
-    </div>
+  <svg id="stage" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <defs id="defs">
+      <filter id="boil" x="-6%" y="-6%" width="112%" height="112%"><feTurbulence id="boilNoise" type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
+      <filter id="smear" x="-30%" y="-10%" width="160%" height="120%"><feGaussianBlur id="smearBlur" stdDeviation="0 0"/></filter>
+      <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+    </defs>
+    <g id="shake"><g id="cam"><g id="bg"></g><g id="back"></g><g id="world"></g><g id="front"></g></g></g>
+  </svg>
+  <div id="panels" class="panels" aria-live="off"></div>
+  <div id="ask" class="ask" hidden></div>
   </div>
   <div id="captions" class="captions" aria-live="polite"><div class="capline"></div></div>
   <div id="gate" class="gate">
@@ -32,7 +37,6 @@ document.documentElement.setAttribute("data-theme",t);})();
     <p class="gate-sub">Fēlix and his cousins want to say hello.</p>
     <button class="btn big" id="gateGo" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>Meet Fēlix</button>
     <p class="gate-note">Turn your sound on. It's about two minutes, and you can skip at any time.</p>
-    <img class="gate-cat" src="art/felix/happy.svg" alt="">
   </div>
   <nav id="bar" class="bar" aria-label="Video controls">
     <button type="button" id="bSkip" class="pill"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14l9-7zM15 5h3v14h-3z" fill="currentColor"/></svg>Skip</button>
@@ -74,8 +78,8 @@ document.documentElement.setAttribute("data-theme",t);})();
   </main>
 
   <footer class="foot">
-    <p>Linguae, Verba and Palabras are free and have no server of their own. Accounts are stored with Google Firebase and <b>are not encrypted or private</b>; read <a href="https://github.com/janavduraikkannan/Verba/blob/main/PRIVACY.md">the privacy statement</a> before making one.</p>
-    <p class="muted">Made for high school language classes. Mascots drawn in code. Voices made with ElevenLabs, mouth timing with Rhubarb Lip Sync, motion with GSAP, rendered to video in Chromium.</p>
+    <p>Linguae, Verba, Palabras, Mots and Wörter are free and have no server of their own. Accounts are stored with Google Firebase and <b>are not encrypted or private</b>; read <a href="https://github.com/janavduraikkannan/Verba/blob/main/PRIVACY.md">the privacy statement</a> before making one.</p>
+    <p class="muted">Made for high school language classes. Mascots drawn in code. Voices made with ElevenLabs, mouth timing with Rhubarb Lip Sync, motion with GSAP.</p>
   </footer>
 </div>
 
@@ -89,8 +93,7 @@ document.documentElement.setAttribute("data-theme",t);})();
 <script src="js/rig.js"></script>
 <script src="js/stage.js"></script>
 <script src="js/accounts.js"></script>
-<script src="js/intro-videos.js"></script>
-<script src="js/player.js"></script>
+<script src="js/intro.js"></script>
 <script src="js/home.js"></script>
 </body>
 </html>

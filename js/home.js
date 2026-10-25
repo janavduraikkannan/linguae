@@ -37,7 +37,7 @@ function acctHeader(){
 }
 function acctCard(){
   const box=$('#acctCard');
-  if(!AC.key){box.innerHTML=`<div class="ac-l"><h2 id="acctH">One account for every site</h2><p>Your account works on Verba, Palabras and every Linguae site to come. Your profile, username and password are shared; XP, levels and streaks are kept separately for each language.</p>
+  if(!AC.key){box.innerHTML=`<div class="ac-l"><h2 id="acctH">One account for every site</h2><p>Your account works on Verba, Palabras, Mots, Wörter and every Linguae site to come. Your profile, username and password are shared; XP, levels and streaks are kept separately for each language.</p>
       <ul class="ticks"><li>No email, ever</li><li>Keeps your progress on any device</li><li>Puts you on the leaderboards</li></ul></div>
     <div class="ac-r"><button class="btn" type="button" id="acLogin">Log in</button><button class="btn alt" type="button" id="acNew">Create an account</button><p class="small">Practice without one if you like: an account is optional.</p></div>`;
     $('#acLogin').onclick=()=>dlg('login');$('#acNew').onclick=()=>dlg('new');return}
@@ -52,7 +52,7 @@ function acctCard(){
   $('#acCopy').onclick=async()=>{try{await navigator.clipboard.writeText(AC.show(AC.key));$('#acCopy').textContent='Copied'}catch(e){shown=true;$('#acKey').textContent=AC.show(AC.key)}};
   $('#acOut').onclick=()=>{if(!confirmOut())return;AC.signOut();refresh()};
 }
-function confirmOut(){return window.confirm('Log out on this browser? You’ll need your account key or username and password to log back in. This logs you out of Verba and Palabras too.')}
+function confirmOut(){return window.confirm('Log out on this browser? You’ll need your account key or username and password to log back in. This logs you out of Verba, Palabras, Mots and Wörter too.')}
 function dlg(mode){
   const D=$('#acctDlg'),B=$('#acctDlgBody');
   if(mode==='login'){B.innerHTML=`<h2>Log in</h2><div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="true" data-t="pw">Username and password</button><button type="button" role="tab" aria-selected="false" data-t="key">Account key</button></div>
@@ -78,7 +78,7 @@ function dlg(mode){
 }
 async function refresh(){acctHeader();acctCard();cards();if(AC.key){await AC.refresh();acctHeader();acctCard();cards()}}
 
-/* ---------- theme (shared with Verba and Palabras) ---------- */
+/* ---------- theme (shared with every site) ---------- */
 function theme(){$('#themeBtn').onclick=()=>{const r=document.documentElement,n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('verba-theme',n)}catch(e){}}}
 
 function playIntro(){INTRO.open(()=>{window.scrollTo(0,0)})}

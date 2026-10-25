@@ -10,8 +10,8 @@
 | --- | --- | --- | --- |
 | Latin | [Verba](https://janavduraikkannan.github.io/verba/) | Fēlix | Live |
 | Spanish | [Palabras](https://janavduraikkannan.github.io/palabras/) | Felicísimo | Live |
-| French | Mots | Félicien | Coming soon |
-| German | Wörter | Fröhlix | Coming soon |
+| French | [Mots](https://janavduraikkannan.github.io/mots/) | Félicien | Live |
+| German | [Wörter](https://janavduraikkannan.github.io/woerter/) | Fröhlix | Live |
 
 ## What it does
 
@@ -19,22 +19,27 @@
   - **Skip** jumps to the next question. **Go to homepage** leaves the intro.
   - **Captions** and **mute** buttons are always on screen.
   - The intro plays the first time you visit. **Replay intro** plays it again, and `?intro` in the address forces it.
-  - Mots and Wörter are shown as if they already existed, but their buttons are greyed out until the sites are built.
+  - A site marked `live:false` in `js/sites.js` shows as coming soon, with its buttons greyed out.
 - **The homepage.** A card for every site, with your rank, XP and streak for each language.
-- **One global account.** Log in with your username and password or your account key, or create an account. This uses the same Firebase accounts as Verba and Palabras. All the sites are on `janavduraikkannan.github.io`, so logging in on one logs you in on all of them.
+- **One global account.** Log in with your username and password or your account key, or create an account. This uses the same Firebase accounts as Verba, Palabras, Mots and Wörter. All the sites are on `janavduraikkannan.github.io`, so logging in on one logs you in on all of them.
 
 ## How the intro is made
 
-The intro is pre-rendered video, cut into parts: the opening up to the language question, one tour per language up to "Continue?", and the short endings. There are two versions, desktop (wide) and phone (tall). The questions, captions, buttons and music are live on top of the video, so they stay sharp and clickable, and each answer starts the next part. While a question waits, a short silent loop of the last moment plays.
+Nothing in it is a video file. Everything is drawn and moved by code:
 
-The video itself is drawn by code, frame by frame:
-
-- **The cats** are vector drawings made by `tools/rig.py`, split into separate static parts (body and outfit, ears, head, eyes, brows, mouth shapes, hat, paws and prop). `js/rig.js` puts them together and moves them: squash and stretch, overshoot and follow-through, breathing, blinks, ear twitches, and a hand-drawn "line boil".
-- **Motion** is done with [GSAP](https://gsap.com) (free "standard" license), vendored in `js/vendor/`. The scenes are in `js/intro.js`.
-- **Rendering**: `tools/render/render.js` runs the scenes in Chromium on a virtual clock, so every frame is exact, and pipes the frames to ffmpeg. The voices and sound effects are mixed sample-exact in an OfflineAudioContext. `tools/render/finish.py` makes the final MP4s, the question loops and `js/intro-videos.js` (when each line, question and scene change happens). `js/player.js` plays them.
+- **The cats** are vector drawings made by `tools/rig.py`, from the same generator as Verba's Fēlix. Each cat is split into separate static parts: body and outfit, ears, head, eyes, brows, mouth shapes, hat, paws and prop. `js/rig.js` puts them together and moves them.
+  - Squash and stretch, overshoot and follow-through on every move.
+  - Breathing, random blinks and ear twitches.
+  - A hand-drawn "line boil" made by re-seeding the paper-roughness filter 8 times a second.
+- **Motion** is done with [GSAP](https://gsap.com) (free "standard" license), vendored in `js/vendor/`.
 - **Voices** were made with [ElevenLabs](https://elevenlabs.io) (model `eleven_v4`), one take per line of `tools/script.json`. Each cousin has his own voice and accent and says his own language's words in that language. `tools/elevenlabs.json` records the voice and prompt behind every line.
-- **Mouth movements** come from [Rhubarb Lip Sync](https://github.com/DanielSWolf/rhubarb-lip-sync) (MIT).
-- **Music** is synthesized by `tools/music.py`, and the sound effects are synthesized with the Web Audio API.
+- **Mouth movements** come from [Rhubarb Lip Sync](https://github.com/DanielSWolf/rhubarb-lip-sync) (MIT), which turns each line into a list of mouth shapes and their timings.
+- **Music** is synthesized by `tools/music.py`, and sound effects are synthesized live with the Web Audio API.
+- **Editing** follows film habits:
+  - Swaps happen during a fast movement and land on the music's beat.
+  - Hard cuts and slow push-ins alternate between sentences.
+  - Whip-pans happen between scenes, and no two transitions in a row are the same.
+- If your device asks for reduced motion, the shaking, bouncing and line boil are turned off.
 
 ## Repository layout
 
@@ -44,14 +49,11 @@ The video itself is drawn by code, frame by frame:
 | `css/linguae.css` | Styles (the same paper look as Verba) |
 | `js/rig.js` | The cat rig |
 | `js/stage.js` | Audio, captions, the cancellable scene director, camera |
-| `js/intro.js` | The intro's scenes (used by the renderer) |
-| `js/player.js` | Plays the rendered intro, with live questions, captions and music |
-| `js/intro-videos.js` | Generated: when things happen in each video part |
-| `video/desktop/`, `video/phone/` | The rendered intro |
-| `tools/render/` | The renderer (`render.js`, `clock.js`, `hooks.js`, `render.html`), `finish.py`, and `probe.js` for checking a layout |
+| `js/intro.js` | The intro's scenes, transitions and questions |
 | `fonts/`, `css/fonts.css` | Self-hosted fonts |
 | `js/home.js` | The homepage |
-| `js/accounts.js` | Accounts, shared with Verba and Palabras |
+| `js/accounts.js` | Accounts, shared with every site |
+| `firestore.rules` | The Firestore security rules, the same file in every site's repository |
 | `js/sites.js` | The language sites and what each tour shows |
 | `js/cats.js`, `js/voice.js`, `js/music.js` | Generated by the tools below |
 | `art/<cat>/` | Each cat in every mood, as static SVGs (for the future Mots and Wörter sites too) |
@@ -69,10 +71,6 @@ The video itself is drawn by code, frame by frame:
 python3 tools/rig.py                     # cats -> js/cats.js and art/
 python3 tools/import_voices.py /path/to/mp3s /path/to/rhubarb  # one ElevenLabs take per line, named <line id>.mp3
 python3 tools/music.py                   # -> audio/music.mp3
-http-server -p 8765 .                    # any static server with range requests, from the repo folder
-node tools/render/render.js desktop /tmp/out/desktop
-node tools/render/render.js phone /tmp/out/phone
-python3 tools/render/finish.py /tmp/out  # -> video/ and js/intro-videos.js
 ```
 
 To change what a cat says, edit `tools/script.json`, generate a new take for that line with the same voice and prompt style (see `tools/elevenlabs.json`), and rerun `import_voices.py` with the line's id as the third argument to redo just that line.

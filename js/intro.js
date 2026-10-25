@@ -5,7 +5,7 @@
 const NS='http://www.w3.org/2000/svg',$=s=>document.querySelector(s);
 const D=window.DIRECTOR,A=window.AUDIO,S=window.STAGE,CAP=window.CAPTIONS,CATS=window.CATS;
 const R=()=>window.REDUCED;
-const mark=(n,x)=>{if(window.__mark)window.__mark(n,x)};
+const mark=()=>{};
 const svgEl=(tag,attrs={},html)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(html!=null)e.innerHTML=html;return e};
 const rnd=(a,b)=>a+Math.random()*(b-a);
 const ORDER=['felix','felicisimo','felicien','frohlix'];
@@ -375,7 +375,6 @@ function skip(){
 }
 let onDone=null;
 function done(kind,url){
-  if(window.__mark){mark('done',kind);return}
   try{localStorage.setItem('linguae-intro-seen','1')}catch(e){}
   D.cancel();hideAsk();A.stopMusic();stopBoil();
   if(kind==='site'&&url){const cover=$('#flash');gsap.to(cover,{opacity:1,duration:.4,onComplete:()=>location.href=url});return}

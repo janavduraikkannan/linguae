@@ -1,4 +1,4 @@
-/* The language sites, and what each cat shows during its tour. Mots and Wörter aren't built yet ("live:false"):
+/* The language sites, and what each cat shows during its tour. A site with "live:false" shows as coming soon:
    they appear everywhere, greyed out, and their tours describe the sites as they're planned. */
 window.SITES=[
 {id:'la',cat:'felix',lang:'Latin',site:'Verba',live:true,url:'https://janavduraikkannan.github.io/verba/',store:'',
@@ -35,7 +35,7 @@ window.SITES=[
   chart:{title:'estar · present',head:['','Sing.','Pl.'],rows:[['1st','estoy','estamos'],['2nd','estás','estáis'],['3rd','está','están']]},
   vocab:[['ella','she'],['estar','to be (location)'],['en casa','at home']],
   keyFmt:'VERBA-7Q4M-K2XA-…'}},
-{id:'fr',cat:'felicien',lang:'French',site:'Mots',live:false,url:'',store:'fr',
+{id:'fr',cat:'felicien',lang:'French',site:'Mots',live:true,url:'https://janavduraikkannan.github.io/mots/',store:'fr',
  courses:['French I','French II','French III','French IV','AP French Language'],
  blurb:'French sentence practice from French I through AP French Language, with Félicien.',
  ranks:[['Élève','student'],['Apprenti','apprentice'],['Voyageur','traveler'],['Explorateur','explorer'],['Causeur','conversationalist'],['Conteur','storyteller'],['Poète','poet'],['Sage','sage'],['Maître','master'],['Légende','legend']],
@@ -52,7 +52,7 @@ window.SITES=[
   chart:{title:'être · present',head:['','Sing.','Pl.'],rows:[['1st','je suis','nous sommes'],['2nd','tu es','vous êtes'],['3rd','il/elle est','ils/elles sont']]},
   vocab:[['où','where'],['être','to be'],['la boulangerie','bakery']],
   keyFmt:'VERBA-7Q4M-K2XA-…'}},
-{id:'de',cat:'frohlix',lang:'German',site:'Wörter',live:false,url:'',store:'de',
+{id:'de',cat:'frohlix',lang:'German',site:'Wörter',live:true,url:'https://janavduraikkannan.github.io/woerter/',store:'de',
  courses:['German I','German II','German III','German IV','AP German Language'],
  blurb:'German sentence practice from German I through AP German Language, with Fröhlix.',
  ranks:[['Schüler','student'],['Lehrling','apprentice'],['Reisender','traveler'],['Entdecker','explorer'],['Plauderer','chatterbox'],['Erzähler','storyteller'],['Dichter','poet'],['Weiser','sage'],['Meister','master'],['Legende','legend']],

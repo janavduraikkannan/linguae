@@ -261,18 +261,3 @@ mark.bad{background:#F6C9BF;color:#A93226;border-radius:5px;padding:0 4px;text-d
 /* the chat and account screens: long words wrap instead of widening the panel */
 .p-chat .bub,.p-account code{overflow-wrap:anywhere}.bub.cat .t{min-width:0}
 
-/* ---- the intro as video: the picture is fitted into the stage; the question layer is drawn at the video's size */
-.stagewrap{background:#ECE3D0}
-.vbox{position:absolute;overflow:hidden}
-.vbox video{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;opacity:0;background:transparent}
-.vbox video.on{opacity:1}
-.vbox.edges video{-webkit-mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent),linear-gradient(to bottom,transparent,#000 3%,#000 97%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent),linear-gradient(to bottom,transparent,#000 3%,#000 97%,transparent);mask-composite:intersect}
-.ovl{position:absolute;left:0;top:0;transform-origin:0 0;pointer-events:none}
-.ovl .ask{pointer-events:auto;width:min(760px,calc(100% - 24px))}
-.desktop .ovl .ask .q{font-size:1.9rem}
-.phone .ovl .ask .q{font-size:1.3rem}
-.phone .ovl .ask{width:calc(100% - 24px)}
-.gate{background:radial-gradient(ellipse at 50% 45%,rgba(248,241,225,.92),rgba(236,227,208,.75) 70%)}
-.gate-cat{width:min(200px,40vw);height:auto;position:absolute;bottom:150px;left:50%;transform:translateX(-50%);animation:peek .7s .3s cubic-bezier(.3,1.6,.5,1) both}
-@keyframes peek{from{transform:translate(-50%,60%)}}
-@media (prefers-reduced-motion:reduce){.gate-cat{animation:none}}

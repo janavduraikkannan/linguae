@@ -1,4 +1,4 @@
-/* Linguae accounts: the same accounts as Verba and Palabras (Firebase project verba-791ca), read and created the
+/* Linguae accounts: the same accounts as Verba, Palabras, Mots and Wörter (Firebase project verba-791ca), read and created the
    same way. Every site lives on janavduraikkannan.github.io, so logging in here logs you in there too, and the
    other way round: they all keep the account key in localStorage["verba-account"].
    Account document: Latin progress at the top level, Spanish under "es" (French "fr" and German "de" later),
@@ -27,12 +27,15 @@ async function put(id,data){
     body:JSON.stringify({fields:{data:{stringValue:JSON.stringify(data)},updated:{timestampValue:new Date().toISOString()}}})});
   if(!r.ok)throw new Error('Saving to the account server failed (error '+r.status+').');
 }
-/* Progress already saved in this browser by Verba or Palabras (without an account) goes into a new account. */
+/* Progress already saved in this browser by any of the sites (without an account) goes into a new account. */
 const VERBA_KEYS=['xp','days','wk','best','since','profile','login','topics','bFrames','bIngs','bFocus','tFocus','per','mode','limit','prov','tab','keyadv'];
+/* Palabras, Mots and Wörter keep the same keys under their own prefix */
+const PREFIX={es:'palabras.',fr:'mots.',de:'woerter.'};
 const ES_KEYS=['xp','days','wk','best','since','topics','bFrames','bIngs','bFocus','tFocus','per','mode','limit','tab','course'];
 function localData(){
-  const o={},es={};VERBA_KEYS.forEach(k=>{const v=readJ('verba.'+k);if(v!==undefined)o[k]=v});
-  ES_KEYS.forEach(k=>{const v=readJ('palabras.'+k);if(v!==undefined)es[k]=v});if(Object.keys(es).length)o.es=es;return o;
+  const o={};VERBA_KEYS.forEach(k=>{const v=readJ('verba.'+k);if(v!==undefined)o[k]=v});
+  for(const [store,pre] of Object.entries(PREFIX)){const x={};ES_KEYS.forEach(k=>{const v=readJ(pre+k);if(v!==undefined)x[k]=v});if(Object.keys(x).length)o[store]=x}
+  return o;
 }
 
 ACCT.refresh=async function(){
@@ -80,7 +83,7 @@ const today=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(
 ACCT.progress=function(store){
   const d=ACCT.data;let src;
   if(d)src=store?d[store]||{}:d;
-  else{src={};const pre=store==='es'?'palabras.':store?null:'verba.';if(pre)['xp','days'].forEach(k=>{const v=readJ(pre+k);if(v!==undefined)src[k]=v})}
+  else{src={};const pre=store?PREFIX[store]:'verba.';if(pre)['xp','days'].forEach(k=>{const v=readJ(pre+k);if(v!==undefined)src[k]=v})}
   const xp=+src.xp||0,days=src.days||{},yd=today(new Date(Date.now()-864e5));
   const streak=(days.last===today()||days.last===yd)?(+days.count||0):0;
   return{xp,streak,started:xp>0};
