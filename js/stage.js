@@ -41,14 +41,15 @@ A.play=async function(name,onStart){
   });
 };
 A.stopVoice=function(){if(A.src){try{A.src.onended=null;A.src.stop()}catch(e){}A.src=null;A.duck(false)}};
-/* sound effects, synthesized */
-A.fx=function(kind,vol=1){
-  if(!A.ctx)return;const c=A.ctx,t=c.currentTime,g=c.createGain();g.connect(A.sfx);g.gain.value=0;
+/* sound effects, synthesized. c/t0/out let the video renderer play them into an offline context at exact times. */
+A.fx=function(kind,vol=1,c=A.ctx,t0,out){
+  if(!c)return;const t=t0==null?c.currentTime:t0;out=out||A.sfx;
   const osc=(type,f0,f1,dur,v=.5)=>{const o=c.createOscillator();o.type=type;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f1,t+dur);
-    const gg=c.createGain();gg.gain.setValueAtTime(0,t);gg.gain.linearRampToValueAtTime(v*vol,t+.008);gg.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(gg);gg.connect(A.sfx);o.start(t);o.stop(t+dur+.02)};
+    const gg=c.createGain();gg.gain.setValueAtTime(0,t);gg.gain.linearRampToValueAtTime(v*vol,t+.008);gg.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(gg);gg.connect(out);o.start(t);o.stop(t+dur+.02)};
   const noise=(dur,f0,f1,v=.4,q=1.2)=>{const n=c.createBufferSource(),len=Math.ceil(c.sampleRate*dur),bb=c.createBuffer(1,len,c.sampleRate),d=bb.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1;n.buffer=bb;
     const f=c.createBiquadFilter();f.type='bandpass';f.Q.value=q;f.frequency.setValueAtTime(f0,t);f.frequency.exponentialRampToValueAtTime(f1,t+dur);
-    const gg=c.createGain();gg.gain.setValueAtTime(0,t);gg.gain.linearRampToValueAtTime(v*vol,t+dur*.35);gg.gain.exponentialRampToValueAtTime(.0001,t+dur);n.connect(f);f.connect(gg);gg.connect(A.sfx);n.start(t);n.stop(t+dur)};
+    const gg=c.createGain();gg.gain.setValueAtTime(0,t);gg.gain.linearRampToValueAtTime(v*vol,t+dur*.35);gg.gain.exponentialRampToValueAtTime(.0001,t+dur);n.connect(f);f.connect(gg);gg.connect(out);n.start(t);n.stop(t+dur)};
+  const tone=(f,dur,v,at)=>{const o=c.createOscillator(),g=c.createGain();o.frequency.value=f;g.gain.setValueAtTime(v,at);g.gain.exponentialRampToValueAtTime(.0001,at+dur);o.connect(g);g.connect(out);o.start(at);o.stop(at+dur)};
   if(kind==='pop'){osc('sine',380,900,.12,.55);osc('triangle',190,420,.08,.2)}
   else if(kind==='whoosh'){noise(.38,400,2600,.5,.9)}
   else if(kind==='swish'){noise(.2,1800,600,.35,1.4)}
@@ -56,11 +57,10 @@ A.fx=function(kind,vol=1){
   else if(kind==='poof'){noise(.32,900,200,.55,.6)}
   else if(kind==='thud'){osc('sine',140,48,.22,.7);noise(.12,300,120,.3,.8)}
   else if(kind==='click'){osc('square',1400,900,.03,.12)}
-  else if(kind==='sparkle'){[1568,2093,2637].forEach((f,i)=>setTimeout(()=>{if(A.ctx)A.fxTone(f,.5,.12*vol)},i*70))}
+  else if(kind==='sparkle'){[1568,2093,2637].forEach((f,i)=>tone(f,.5,.12*vol,t+i*.07))}
   else if(kind==='tick'){osc('triangle',2200,1800,.04,.18)}
   else if(kind==='type'){noise(.03,3000,2500,.14,2)}
 };
-A.fxTone=function(f,dur,v){const c=A.ctx,t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(A.sfx);o.start(t);o.stop(t+dur)};
 window.AUDIO=A;
 
 /* ---------- director: every scene step goes through it, so Skip / Home cancel cleanly ---------- */

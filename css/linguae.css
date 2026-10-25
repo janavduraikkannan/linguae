@@ -152,7 +152,8 @@ code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.95em}
 .pnl{grid-area:1/1;position:relative;background:#FBF6EA;border:2.5px solid #2B241E;border-radius:20px;box-shadow:5px 5px 0 #2B241E;padding:18px 20px;width:min(560px,calc(100vw - 32px));pointer-events:auto}
 .pnl{max-height:calc(100% - 24px)}
 .panels.tour .pnl{width:min(560px,52%);max-height:92%;overflow:auto}
-.phone .panels.tour .pnl{width:auto;max-height:58%;padding:14px 16px}
+.phone .panels.tour .pnl{width:auto;max-height:calc(100% - 112px);padding:12px 14px;font-size:15px}
+.phone .panels.tour .ptitle{font-size:1.1rem;margin-bottom:6px}
 .phone .ptitle{font-size:1.15rem}
 .ptitle{font-family:var(--display);font-weight:700;font-size:1.35rem;margin-bottom:10px;display:flex;align-items:center;gap:10px}
 .ptitle.sm{font-size:1.05rem}
@@ -163,6 +164,7 @@ code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.95em}
 .p-strip .strip span{display:inline-block;background:#F3E3BC;border-radius:8px;padding:0 8px}
 .p-strip .small{text-align:center;margin:6px 0 0}
 .p-key1{width:auto;padding:12px 18px}
+.phone .panels .pnl.pmid{align-self:center;margin-top:-4%}
 .keycard{display:flex;align-items:center;gap:12px;font-size:1.1rem}
 .keycard code{display:block;font-size:1rem;color:#6A5D4F}
 .kc-icon{width:44px;height:44px;border-radius:12px;background:#A9442A url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='8' cy='12' r='4' fill='none' stroke='%23FFF6E8' stroke-width='2.4'/%3E%3Cpath d='M12 12h9M18 12v3M21 12v2' stroke='%23FFF6E8' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center/70% no-repeat}
@@ -229,7 +231,7 @@ mark.bad{background:#F6C9BF;color:#A93226;border-radius:5px;padding:0 4px;text-d
 .streak,.award{display:flex;align-items:center;gap:6px;background:#EFE5D0;border-radius:12px;padding:8px 12px;font-weight:700}
 .streak img,.award img{width:26px}
 .award b{font-family:var(--latin)}
-.acc .kline{margin-bottom:8px}
+.acc .kline{margin-bottom:8px;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 8px}
 .acc code{font-size:1.05rem}
 .board{margin-top:10px;border-top:1.5px dashed #C9B998;padding-top:8px}
 .brow{display:grid;grid-template-columns:28px 1fr auto;gap:8px;padding:5px 8px;border-radius:8px;font-size:.95rem}
@@ -254,3 +256,23 @@ mark.bad{background:#F6C9BF;color:#A93226;border-radius:5px;padding:0 4px;text-d
 .phone .langs{grid-template-columns:repeat(2,1fr)}
 @media (max-width:620px){.langs{grid-template-columns:repeat(2,1fr)}.bar .pill:not(.icon){padding:6px 11px;font-size:.92rem}}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.caret{animation:none}}
+/* phone tour: the topics list is the tallest screen, so it gets tighter rows */
+.phone .p-topics .tgroup{margin-bottom:4px}.phone .p-topics .titem{padding:2px 8px;font-size:.9rem}.phone .p-topics .tgroup>b{margin-bottom:1px;font-size:.74rem}.phone .p-topics .legend{margin-top:2px}
+/* the chat and account screens: long words wrap instead of widening the panel */
+.p-chat .bub,.p-account code{overflow-wrap:anywhere}.bub.cat .t{min-width:0}
+
+/* ---- the intro as video: the picture is fitted into the stage; the question layer is drawn at the video's size */
+.stagewrap{background:#ECE3D0}
+.vbox{position:absolute;overflow:hidden}
+.vbox video{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;opacity:0;background:transparent}
+.vbox video.on{opacity:1}
+.vbox.edges video{-webkit-mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent),linear-gradient(to bottom,transparent,#000 3%,#000 97%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent),linear-gradient(to bottom,transparent,#000 3%,#000 97%,transparent);mask-composite:intersect}
+.ovl{position:absolute;left:0;top:0;transform-origin:0 0;pointer-events:none}
+.ovl .ask{pointer-events:auto;width:min(760px,calc(100% - 24px))}
+.desktop .ovl .ask .q{font-size:1.9rem}
+.phone .ovl .ask .q{font-size:1.3rem}
+.phone .ovl .ask{width:calc(100% - 24px)}
+.gate{background:radial-gradient(ellipse at 50% 45%,rgba(248,241,225,.92),rgba(236,227,208,.75) 70%)}
+.gate-cat{width:min(200px,40vw);height:auto;position:absolute;bottom:150px;left:50%;transform:translateX(-50%);animation:peek .7s .3s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes peek{from{transform:translate(-50%,60%)}}
+@media (prefers-reduced-motion:reduce){.gate-cat{animation:none}}

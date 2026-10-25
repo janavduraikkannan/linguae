@@ -29,7 +29,7 @@ const POSES={
 class Cat{
   constructor(id,parent){
     this.id=id;const c=C.chars[id];this.info=c;
-    this.root=el('g',{class:'cat cat-'+id,'data-cat':id});
+    this.root=el('g',{class:'cat cat-'+id,'data-cat':id});this.at={x:0,y:0,s:1};
     this.flip=el('g');                                  // mirror for facing left/right
     this.squash=el('g');                                // squash & stretch, pivot at the base
     this.inner=el('g',{filter:'url(#boil)'});
@@ -60,7 +60,11 @@ class Cat{
     this.setFace('happy');this.pose('rest',0);
   }
   /* Place the cat: x, y = where the middle of its base sits; s = size (1 = 240 units wide). */
-  place(x,y,s=1){gsap.set(this.root,{x:x-120*s,y:y-240*s,scale:s,transformOrigin:'0 0'});return this}
+  /* the cat's spot: (x, y) is the middle of its base, s its size. Written straight to the transform, so the scale is
+     always about the cat's own origin (GSAP would scale about the drawing's bounding box, which differs per prop). */
+  place(x,y,s=1){gsap.killTweensOf(this.at);this.at.x=x;this.at.y=y;this.at.s=s;this.applyAt();return this}
+  applyAt(){const a=this.at;this.root.setAttribute('transform',`translate(${a.x-120*a.s} ${a.y-240*a.s}) scale(${a.s})`)}
+  moveTo(x,y,s,d=.6,ease='power3.inOut'){return gsap.to(this.at,{x,y,s,duration:d,ease,onUpdate:()=>this.applyAt()})}
   showProp(on){this.propG.style.display=on?'':'none';return this}
   setFace(name,blush){
     const f=FACES[name]||FACES.happy;this.faceName=name;

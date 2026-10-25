@@ -5,6 +5,7 @@
 const NS='http://www.w3.org/2000/svg',$=s=>document.querySelector(s);
 const D=window.DIRECTOR,A=window.AUDIO,S=window.STAGE,CAP=window.CAPTIONS,CATS=window.CATS;
 const R=()=>window.REDUCED;
+const mark=(n,x)=>{if(window.__mark)window.__mark(n,x)};
 const svgEl=(tag,attrs={},html)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(html!=null)e.innerHTML=html;return e};
 const rnd=(a,b)=>a+Math.random()*(b-a);
 const ORDER=['felix','felicisimo','felicien','frohlix'];
@@ -15,14 +16,15 @@ let cats={},layers={},state={scene:'',lang:null};
 function catAt(id,x,y,s){const c=cats[id]||(cats[id]=new Cat(id,layers.world));c.root.style.display='';c.place(x,y,s);c.pos={x,y,s};return c}
 function freshCats(){Object.values(cats).forEach(c=>c.remove());cats={}}
 function hideCat(id){const c=cats[id];if(c){c.root.style.display='none';c.idle(false)}}
-function moveCat(c,x,y,s,d=.6,ease='power3.inOut'){c.pos={x,y,s};return gsap.to(c.root,{x:x-120*s,y:y-240*s,scale:s,duration:d,ease})}
+function moveCat(c,x,y,s,d=.6,ease='power3.inOut'){c.pos={x,y,s};return c.moveTo(x,y,s,d,ease)}
 /* Where things go, per version. Desktop stages side by side; phone stacks top to bottom. Both stop at the bottom
    of the stage area, which ends above the subtitle band. */
 function heroSpot(){const H=S.H;return S.phone?{x:0,y:H/2+6,s:2.05}:{x:0,y:H/2+6,s:1.7}}
-function tourSpot(){const W=S.W,H=S.H;return S.phone?{x:0,y:-H/2+H*.37,s:Math.min(1.3,H*.33/240)}:{x:-W/2+W*.22,y:H/2+6,s:1.55}}
+/* phone: the host sits small in the top corner so the site's screens get most of the height */
+function tourSpot(){const W=S.W,H=S.H;return S.phone?{x:-W/2+112,y:-H/2+196,s:.72}:{x:-W/2+W*.22,y:H/2+6,s:1.55}}
 function lineupSpots(){
   const W=S.W,H=S.H;
-  if(S.phone){const y2=H/2-96,y1=y2-330,s=.92;return[[-150,y1,s],[150,y1,s],[-150,y2,s],[150,y2,s]]}
+  if(S.phone){const s=.85,y1=-H/2+26+240*s,y2=H/2-90,x=Math.min(172,W/2-112);return[[-x,y1,s],[x,y1,s],[-x,y2,s],[x,y2,s]]}
   const gap=Math.min(250,W/4.3),y=H/2-100,s=1;return[-1.5,-.5,.5,1.5].map(i=>[i*gap,y,s]);
 }
 /* phone only: during the language question the cats shrink into one row under the buttons */
@@ -69,7 +71,7 @@ const BG={
 let bgTweens=[];
 function setBg(kind,cut=true){
   bgTweens.forEach(t=>t.kill());bgTweens=[];
-  const g=layers.bg,old=g.firstElementChild,n=svgEl('g',{},BG[kind]());
+  mark('bg',kind);const g=layers.bg,old=g.firstElementChild,n=svgEl('g',{},BG[kind]());
   if(old&&!cut){g.append(n);gsap.fromTo(n,{opacity:0},{opacity:1,duration:.5,onComplete:()=>old.remove()})}else{g.innerHTML='';g.append(n)}
   if(!R()){const r=n.querySelector('.rays');if(r)bgTweens.push(gsap.to(r,{rotation:360,duration:160,repeat:-1,ease:'none',svgOrigin:'0 0'}));
     n.querySelectorAll('.far').forEach(f=>bgTweens.push(gsap.fromTo(f,{x:-14},{x:14,duration:14,yoyo:true,repeat:-1,ease:'sine.inOut'})));
@@ -188,7 +190,7 @@ const PANELS={
 const TOUR=[['courses','present','happy'],['topics','point','curious'],['sentence','point','happy'],['feedback','chin','thinking'],['ec','point','cheeky'],['chat','wave','delighted'],['key','point','happy'],['chart','point','calm'],['xp','cheer','excited'],['account','present','proud']];
 
 /* ------------------------------------------------------------------ questions */
-function ask(html,kind='lang'){const a=$('#ask');a.innerHTML=html;a.className='ask ask-'+kind;a.hidden=false;$('#bSkip').hidden=true;gsap.fromTo(a,{y:30,opacity:0},{y:0,opacity:1,duration:.45,ease:'back.out(1.8)'});gsap.from(a.querySelectorAll('button,.note'),{y:14,opacity:0,stagger:.06,duration:.35,delay:.12,ease:'back.out(2)'});return a}
+function ask(html,kind='lang'){mark('ask',kind);const a=$('#ask');a.innerHTML=html;a.className='ask ask-'+kind;a.hidden=false;$('#bSkip').hidden=true;gsap.fromTo(a,{y:30,opacity:0},{y:0,opacity:1,duration:.45,ease:'back.out(1.8)'});gsap.from(a.querySelectorAll('button,.note'),{y:14,opacity:0,stagger:.06,duration:.35,delay:.12,ease:'back.out(2)'});return a}
 function hideAsk(){const a=$('#ask');if(a.hidden)return;$('#bSkip').hidden=false;gsap.to(a,{opacity:0,y:20,duration:.2,onComplete:()=>{a.hidden=true;a.innerHTML=''}})}
 function choose(a,selector){const g=D.gen;return new Promise((ok,no)=>{a.querySelectorAll(selector).forEach(b=>b.addEventListener('click',()=>{if(g!==D.gen)return no(new D.Cancel());if(b.disabled||b.getAttribute('aria-disabled')==='true')return;fx('click');ok(b.dataset.v)}));
   D.choiceCancel=()=>no(new D.Cancel())})}
@@ -246,8 +248,8 @@ async function sceneIntro(){
   F.look(0,0);
   // one account joins them all
   F.setFace('proud');F.pose('present');
-  const key=await panel(`<div class="keycard"><span class="kc-icon" aria-hidden="true"></span><div><b>One account</b><code>VERBA-7Q4M-K2XA-…</code></div></div>`,{cls:'p-key1 ptop',enter:'drop'});
-  links(L);
+  const key=await panel(`<div class="keycard"><span class="kc-icon" aria-hidden="true"></span><div><b>One account</b><code>VERBA-7Q4M-K2XA-…</code></div></div>`,{cls:'p-key1 '+(S.phone?'pmid':'ptop'),enter:'drop'});
+  links(L,key);
   await D.say(F,'intro.8',{hold:.1});
 }
 function panelTitle(){const t=document.createElement('div');t.className='pnl p-title ptop';t.innerHTML=`<h2>Linguae</h2><p><u data-en="languages">Linguae</u> = “languages”</p>`;P.el.append(t);
@@ -266,8 +268,14 @@ function plates(L){if(plateG)plateG.remove();plateG=svgEl('g',{class:'plates'});
     plateG.append(g)})}
 function showPlate(i){const g=plateG&&plateG.children[i];if(!g)return;fx('pop',.4);gsap.fromTo(g,{opacity:0,y:'+=30'},{opacity:1,y:'-=30',duration:.4,ease:'back.out(2)'})}
 let linkG=null;
-function links(L){if(linkG)linkG.remove();linkG=svgEl('g');layers.back.append(linkG);const top=-S.H/2+(S.phone?110:120);
-  L.forEach(([x,y,s])=>{const p=svgEl('path',{d:`M0,${top} C0,${top+120} ${x},${y-330*s} ${x},${y-260*s}`,fill:'none',stroke:'#A9442A','stroke-width':5,'stroke-dasharray':'14 12','stroke-linecap':'round',opacity:.8});linkG.append(p);
+/* the card's edges in world units (layout box, so the drop-in animation doesn't skew it) */
+function cardBox(n){const w=S.wrap.getBoundingClientRect(),k=1/S.px,top=n.offsetTop,h=n.offsetHeight;return{top:(top-w.height/2)*k,bot:(top+h-w.height/2)*k,half:n.offsetWidth/2*k}}
+function links(L,card){if(linkG)linkG.remove();linkG=svgEl('g');layers.back.append(linkG);const top=-S.H/2+120;
+  const B=S.phone&&card?cardBox(card):null;
+  L.forEach(([x,y,s])=>{let d;
+    if(B){const up=y<0,sx=Math.sign(x)*Math.min(B.half*.55,Math.abs(x)*.62),sy=up?B.top:B.bot,ex=x,ey=up?y+96:y-226*s,my=(sy+ey)/2;d=`M${sx},${sy} C${sx},${my} ${ex},${my} ${ex},${ey}`}
+    else d=`M0,${top} C0,${top+120} ${x},${y-330*s} ${x},${y-260*s}`;
+    const p=svgEl('path',{d,fill:'none',stroke:'#A9442A','stroke-width':5,'stroke-dasharray':'14 12','stroke-linecap':'round',opacity:.8});linkG.append(p);
     const len=p.getTotalLength?p.getTotalLength():600;gsap.fromTo(p,{attr:{'stroke-dashoffset':len}},{attr:{'stroke-dashoffset':0},duration:.9,ease:'power2.out',delay:.3})})}
 function clearLineup(){if(plateG){gsap.to(plateG,{opacity:0,duration:.25,onComplete:()=>{if(plateG){plateG.remove();plateG=null}}})}if(linkG){linkG.remove();linkG=null}}
 
@@ -284,7 +292,7 @@ async function askLanguage(){
   const a=ask(`<p class="q">So, which language are you learning?</p><div class="langs">${SITES.map(s=>`<button type="button" data-v="${s.id}" class="lang">${faceImg(s.cat)}<span><b>${s.lang}</b><small>${s.site}${s.live?'':' · coming soon'}</small></span></button>`).join('')}</div>`);
   // hovering a language makes its cat perk up
   a.querySelectorAll('.lang').forEach(b=>{const c=cats[SITE_BY[b.dataset.v].cat];b.addEventListener('pointerenter',()=>{c.setFace('excited');c.hop(16,.4)});b.addEventListener('pointerleave',()=>c.setFace('happy'))});
-  const said=D.say(F,'ask.lang',{hold:0}).catch(()=>{});
+  const said=D.say(F,'ask.lang',{hold:0}).then(()=>mark('askline','lang')).catch(()=>{});
   const v=await choose(a,'.lang');
   A.stopVoice();hideAsk();return v;
 }
@@ -339,7 +347,7 @@ async function askContinue(lang){
     <button type="button" data-v="yes" class="btn big"${site.live?'':' disabled aria-disabled="true"'}>Yes, go to ${esc(site.site)}</button>
     <button type="button" data-v="no" class="btn ghostbtn big">No, go to homepage</button></div>
     ${site.live?'':`<p class="note">${esc(site.site)} hasn’t been built yet. It’s coming soon!</p>`}`,'cont');
-  D.say(host,'ask.'+lang,{hold:0}).catch(()=>{});
+  D.say(host,'ask.'+lang,{hold:0}).then(()=>mark('askline',lang)).catch(()=>{});
   const v=await choose(a,'.yn button');A.stopVoice();hideAsk();
   if(v==='yes'){host.setFace('delighted');host.pose('cheer');host.hop(40,.5);fx('sparkle');
     if(lang==='la')await D.say(host,'bye.yes',{hold:.1}).catch(()=>{});else await D.wait(.7);
@@ -362,11 +370,12 @@ function skip(){
   fx('swish',.5);D.cancel();hideAsk();
   // a quick white flash covers the jump, like a cut
   const fl=$('#flash');gsap.fromTo(fl,{opacity:.85},{opacity:0,duration:.35});
-  if(target==='ask'){P.el.classList.remove('tour');ORDER.forEach(id=>{if(cats[id]){gsap.killTweensOf([cats[id].root,cats[id].squash,cats[id].flip]);}});if(plateG){plateG.remove();plateG=null}run('ask')}
-  else{ORDER.forEach(id=>{if(cats[id])gsap.killTweensOf([cats[id].root,cats[id].squash,cats[id].flip])});P.el.classList.remove('tour');gsap.set(S.cam,{x:0,y:0,scale:1});smear(false);run('cont')}
+  if(target==='ask'){P.el.classList.remove('tour');ORDER.forEach(id=>{if(cats[id]){gsap.killTweensOf([cats[id].at,cats[id].squash,cats[id].flip]);}});if(plateG){plateG.remove();plateG=null}run('ask')}
+  else{ORDER.forEach(id=>{if(cats[id])gsap.killTweensOf([cats[id].at,cats[id].squash,cats[id].flip])});P.el.classList.remove('tour');gsap.set(S.cam,{x:0,y:0,scale:1});smear(false);run('cont')}
 }
 let onDone=null;
 function done(kind,url){
+  if(window.__mark){mark('done',kind);return}
   try{localStorage.setItem('linguae-intro-seen','1')}catch(e){}
   D.cancel();hideAsk();A.stopMusic();stopBoil();
   if(kind==='site'&&url){const cover=$('#flash');gsap.to(cover,{opacity:1,duration:.4,onComplete:()=>location.href=url});return}
@@ -404,5 +413,5 @@ function open(cb){onDone=cb;const I=$('#intro');I.hidden=false;gsap.set(I,{opaci
   gsap.fromTo(f.squash,{y:300},{y:0,duration:.6,ease:'back.out(1.6)',delay:.3});
   $('#bSkip').hidden=false;
 }
-window.INTRO={init,open,done};
+window.INTRO={init,open,done,start};
 })();
