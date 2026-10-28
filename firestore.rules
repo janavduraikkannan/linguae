@@ -1,5 +1,5 @@
 rules_version = '2';
-// The same file is in every Linguae repository (verba, palabras, mots, woerter, linguae); publish it in the Firebase
+// The same file is in every Linguae repository (verba, palabras, mots, woerter, linguae, vocabula); publish it in the Firebase
 // console for project verba-791ca after changing it, and copy it to all of them.
 // Verba accounts: each account is one document named by its secret account key.
 // A key can read and save its own document; nobody can list or delete accounts.
@@ -23,6 +23,9 @@ rules_version = '2';
 // German leaderboard: boardde/{id} is the public board of Wörter, the German sister site, with the same rules and ids as
 // boardes/{id}.
 //
+// Vocab progress: vocab/{id} holds Vocābula's flashcard progress for one account, named by the same secret account
+// key as accounts/{id}. It can only be saved for an account that exists. No leaderboard; nobody can list or delete them.
+//
 // Password logins (optional): logins/{id} holds the account key, encrypted in the browser with a key stretched from
 // the username and password. The id comes from the same stretching, so it reveals neither. No password is ever
 // stored in readable form, and no email is ever asked for or sent. Each change must show the previous link of a hash
@@ -35,6 +38,16 @@ service cloud.firestore {
         && request.resource.data.keys().hasOnly(['data', 'updated'])
         && request.resource.data.data is string
         && request.resource.data.data.size() < 60000;
+      allow list, delete: if false;
+    }
+
+    match /vocab/{id} {
+      allow get: if id.size() == 24;
+      allow create, update: if id.size() == 24
+        && exists(/databases/$(database)/documents/accounts/$(id))
+        && request.resource.data.keys().hasOnly(['data', 'updated'])
+        && request.resource.data.data is string
+        && request.resource.data.data.size() < 200000;
       allow list, delete: if false;
     }
 
